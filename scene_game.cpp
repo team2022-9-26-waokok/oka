@@ -31,8 +31,7 @@ int cursor_posX, cursor_posY;
 //******************************************************************************
 #endif
 //TODO_01
-Sprite* sprCar;
-Sprite* sprCourse;
+
 
 #if 3
 //******************************************************************************
@@ -140,7 +139,7 @@ void game_update()
         cursor_posX = getCursorPosX();
         cursor_posY = getCursorPosY();
 
-
+        player_update();
         break;
 
     }
@@ -155,12 +154,8 @@ void game_render()
 {
     // ‰æ–Ê‚ðƒNƒŠƒA‚·‚é
     GameLib::clear(0.2549f, 0.5569f, 0.1020f);
-
-    sprite_render(sprCourse, SCREEN_W / 2, SCREEN_H / 2, 2.0f, 2.0f, 0, 0, 3840, 1920, 300 + carPosX, 300 + carPosY, angle);
-
-    sprite_render(sprCar, SCREEN_W / 2, SCREEN_H / 2, 1.0f, 1.0f, 0, 0, 256, 256, 256 / 2, 256 / 2, ToRadian(0));
-
-
+    player_render();
+    
 
 
     primitive::line(900, 30, 1275, 30, 1, 1, 1, 0.4f, 50);
@@ -174,6 +169,5 @@ void game_render()
 //--------------------------------------
 void game_deinit()
 {
-    safe_delete(sprCar);
-    safe_delete(sprCourse);
+
 }

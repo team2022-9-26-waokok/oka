@@ -15,7 +15,7 @@ void title_init()
 void title_deinit()
 {
 	//‡G
-	safe_delete(sprCar2);
+
 }
 void title_update()
 {
@@ -25,7 +25,7 @@ void title_update()
 	case 0:
 		//////// ‰Šúİ’è ////////
 		//‡F
-		sprCar2 = sprite_load(L"./Data/Images/right.png");
+		
 		title_state++;
 		/*fallthrough*/
 	case 1:
@@ -51,8 +51,7 @@ void title_render()
 	//‡H
 	GameLib::clear(0, 0.3f, 0.3f);
 	//‡I
-	sprite_render(sprCar2, 200, 200);
-	font::textOut(1, "title", 300, 100, 2, 2, 1, 1, 1);
+
 	if ((title_timer / 20) % 2 == 0)
 	{
 		font::textOut(1, "start:enter", SCREEN_W/2-200,650, 1, 1, 1, 1, 1);
