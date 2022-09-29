@@ -23,6 +23,7 @@
 // 個々のファイルは下のほうへ
 #include "scene_game.h"
 #include "scene_title.h"
+#include "scene_gatya.h"
 using namespace GameLib;
 using namespace input;
 extern int game_timer;
