@@ -41,6 +41,9 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 			case SCENE_GAME:
 				game_init();
 				break;
+			case SCENE_GATYA:
+				gatya_init();
+				break;
 			}
 			// nextScene が curScene になる
 			curScene = nextScene;
@@ -57,6 +60,9 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 			game_update();
 			game_render();
 			break;
+		case SCENE_GATYA:
+			gatya_update();
+			gatya_render();
 		}
 		//③タイトルの更新処理
 		//i
@@ -80,6 +86,9 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		break;
 	case SCENE_GAME:
 		game_deinit();
+		break;
+	case SCENE_GATYA:
+		gatya_deinit();
 		break;
 	}
 	// ゲームライブラリの終了処理

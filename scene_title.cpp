@@ -41,6 +41,11 @@ void title_update()
 			nextScene = SCENE_GAME;
 			break;
 		}
+		else if (TRG(0) & PAD_SELECT)
+		{
+			nextScene = SCENE_GATYA;
+			break;
+		}
 		break;
 	}
 	//‡B
