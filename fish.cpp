@@ -91,7 +91,7 @@ void fish_render()
 	//);
 	for (int i = 0; i < fish_MAX; i++)
 	{
-		sprite_render()
+		//sprite_render()
 	}
 
 }

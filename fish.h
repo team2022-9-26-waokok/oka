@@ -7,6 +7,6 @@ void fish_init();
 void fish_deinit();
 void fish_update();
 void fish_render();
-
+void plrender();
 
 #endif//FISH_H
