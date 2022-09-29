@@ -3,10 +3,11 @@
 int fish_state;
 int fish_MAX = 5;
 int i = 0;
+int direction = 0;
+
+Sprite* sprfish;
 
 OBJ2D fish[50];
-
-
 
 struct fish_DATA
 {
@@ -33,9 +34,12 @@ void fish_deinit()
 
 void fish_update()
 {
+	srand((unsigned int)time(NULL));
+
 	switch (fish_state)
 	{
 	case 0:
+		sprfish = sprite_load(L"./Data/Images/fish.png");
 
 		++fish_state;
 		/*falltheough*/
@@ -70,9 +74,36 @@ void fish_update()
 
 		for (int i = 0; i < fish_MAX; i++)
 		{
+			if (fish[i].exist)continue;
 			fish[i].exist = true;
-			fish[i].pos.x = 100, fish[i].pos.y = 100;
+			direction = rand() % 2;
+			if (direction == 0)
+			{
+				fish[i].direc = 0;
+				fish[i].pos.x = rand() % 960 + 480;
+				fish[i].pos.y = 0;
+			}
+			if (direction == 1)
+			{
+				fish[i].direc = 1;
+				fish[i].pos.x = 0;
+				fish[i].pos.y = rand() % 360 + 180;
+			}
+			
 		}
+		
+		for (int i = 0; i < fish_MAX; i++)
+		{
+			if (fish[i].direc == 0)
+			{
+				fish[i].pos.y += 1;
+			}
+			if (fish[i].direc == 1)
+			{
+				fish[i].pos.x += 1;
+			}
+		}
+
 
 		break;
 	}
@@ -91,7 +122,14 @@ void fish_render()
 	//);
 	for (int i = 0; i < fish_MAX; i++)
 	{
-		sprite_render()
+		if (fish[i].direc == 0)
+		{
+			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(180));
+		}
+		if (fish[i].direc == 1)
+		{
+			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(90));
+		}
 	}
 
 }
