@@ -13,6 +13,7 @@ struct OBJ2D
 	GameLib::Sprite* spr;
 
 	VECTOR2				pos;
+	VECTOR2				Memoypos;
 	VECTOR2				scale;
 	VECTOR2				texPos;
 	VECTOR2				texSize;

@@ -4,7 +4,6 @@ int nextScene = SCENE_TITLE;
 extern int title_state;
 extern int title_timer;
 extern int game_state;
-extern int game_timer;
 
 
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)

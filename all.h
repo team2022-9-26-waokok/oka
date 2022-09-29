@@ -10,6 +10,8 @@
 #include "obj2d.h"
 #include "camera.h"
 #include "player.h"
+#include "fish.h"
+#include "easing.h"
 
 
 // 個々のファイルは下のほうへ
@@ -17,4 +19,6 @@
 #include "scene_title.h"
 using namespace GameLib;
 using namespace input;
+extern int game_timer;
+
 #endif//ALL_H

@@ -138,8 +138,9 @@ void game_update()
 
         cursor_posX = getCursorPosX();
         cursor_posY = getCursorPosY();
-
+        camera_update();
         player_update();
+        fish_update();
         break;
 
     }
@@ -154,8 +155,9 @@ void game_render()
 {
     // ‰æ–Ê‚ðƒNƒŠƒA‚·‚é
     GameLib::clear(0.2549f, 0.5569f, 0.1020f);
+    fish_render();
     player_render();
-    
+ 
 
 
     primitive::line(900, 30, 1275, 30, 1, 1, 1, 0.4f, 50);
