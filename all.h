@@ -7,11 +7,17 @@
 
 // 共通で使われるようなヘッダー
 #include "common.h"
+
 #include "obj2d.h"
+#include "anime_fnc.h"
 #include "camera.h"
 #include "player.h"
 #include "fish.h"
+
 #include "easing.h"
+
+
+
 
 
 // 個々のファイルは下のほうへ
