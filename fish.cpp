@@ -89,7 +89,11 @@ void fish_update()
 				fish[i].pos.x = 0;
 				fish[i].pos.y = rand() % 360 + 180;
 			}
-			
+			if (fish[i].pos.x == 1280 || fish[i].pos.x == 720)
+			{
+				fish[i].exist = false;
+				//fish_MAX += 1;
+			}
 		}
 		
 		for (int i = 0; i < fish_MAX; i++)
@@ -122,11 +126,11 @@ void fish_render()
 	//);
 	for (int i = 0; i < fish_MAX; i++)
 	{
-		if (fish[i].direc == 0)
+		if (fish[i].direc == 0 && fish[i].exist == true)
 		{
-			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(180));
+			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(180));	
 		}
-		if (fish[i].direc == 1)
+		if (fish[i].direc == 1 && fish[i].exist == true)
 		{
 			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(90));
 		}
