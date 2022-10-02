@@ -126,9 +126,7 @@ void fish_render()
 	//);
 	for (int i = 0; i < fish_MAX; i++)
 	{
-<<<<<<< HEAD
-		//sprite_render()
-=======
+
 		if (fish[i].direc == 0 && fish[i].exist == true)
 		{
 			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(180));	
@@ -137,7 +135,7 @@ void fish_render()
 		{
 			sprite_render(sprfish, fish[i].pos.x, fish[i].pos.y, 1, 1, 0, 0, 128, 128, 64, 64, ToRadian(90));
 		}
->>>>>>> 739471bdb2d5fa4b45bea12f3e80a97d1dbc3209
+
 	}
 
 }
