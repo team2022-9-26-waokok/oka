@@ -20,6 +20,7 @@ struct OBJ2D
 	VECTOR2				pivot;
 	VECTOR4				color;
 
+
 	VECTOR2				speed;
 	int					act;
 	int					anime;
@@ -30,6 +31,7 @@ struct OBJ2D
 	VECTOR2				scroll;
 
 	int					level;
+	int					direc;
 
 
 	float				radius;		//“–‚½‚è”»’è‚Ì”¼Œa
