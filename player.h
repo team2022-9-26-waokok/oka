@@ -7,6 +7,8 @@ void player_init();
 void player_deinit();
 void player_update();
 void player_render();
+void plrender();
+void battle_render();
 
 enum playeract
 {

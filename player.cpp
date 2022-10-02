@@ -4,6 +4,9 @@ int player_state;
 
 OBJ2D player;
 int player_act;
+float player_time;
+float player_ber;
+float battle_ber;
 float memory;
 bool nomal_trans_easing;
 
@@ -113,14 +116,14 @@ void player_update()
 				}
 			break;
 		case FISHING:
-			if (TRG(0) & PAD_TRG1)//バックスペースでタイトルへ戻る
+			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL;
 				player.scale = { 2.0f,2.0f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 
 			}
-			if (TRG(0) & PAD_TRG2)//バックスペースでタイトルへ戻る
+			if (TRG(0) & PAD_TRG2)
 			{
 				player_act = FISHING_BTTLE_TRANS;
 				game_timer = 0;
@@ -131,10 +134,25 @@ void player_update()
 			player.pos.y += 0.1f;
 			player.color.x += 0.02f;
 			player.color.y += 0.02f;
+
+			if ((float)game_timer * 0.1f == 1)
+			{
+				player_act = FISHING_BTTLE;
+				player_time = 0;
+			}
 			break;
-			
 		case FISHING_BTTLE:
 			
+
+			player_time += 5.0f;
+			player_ber = player_time;
+			if (player_time >= 240.0f)
+			{
+				player_time = 0.0f;
+
+			}
+			battle_ber;
+
 			break;
 		}
 
@@ -170,8 +188,12 @@ void player_render()
 		case FISHING:
 			plrender();
 			break;
+		case FISHING_TRANS:
+			plrender();
+			break;
 		case FISHING_BTTLE:
-			plrender();	
+			plrender();
+			battle_render();
 			break;
 		case FISHING_BTTLE_TRANS:
 			plrender();
@@ -181,7 +203,13 @@ void player_render()
 }
 
 
+void battle_render()
+{
+	primitive::rect(player.pos.x + player.scroll.x-250/2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f,0.5f);
+	primitive::rect(player.pos.x + player.scroll.x-250/2+ player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f,1.0f);
 
+
+}
 
 void plrender()
 {
@@ -194,4 +222,7 @@ void plrender()
 		player.pivot.x, player.pivot.y,
 		player.angle,
 		player.color.x, player.color.y, player.color.z, player.color.w);
+
 }
+
+
