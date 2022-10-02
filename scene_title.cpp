@@ -59,6 +59,6 @@ void title_render()
 
 	if ((title_timer / 20) % 2 == 0)
 	{
-		font::textOut(1, "start:enter", SCREEN_W/2-200,650, 1, 1, 1, 1, 1);
+		font::textOut(1, "start:enter", (float)SCREEN_W/2-200,650, 1, 1, 1, 1, 1);
 	}
 }

@@ -1,10 +1,11 @@
 #ifndef FISH_H
 #define FISH_H
 // 関数のプロトタイプ宣言
-extern OBJ2D player;//all.hをインクルードしているすべてのファイルで使用可能になる
+
+
 #define type_num 5
 
-
+extern int fish_MAX;
 void fish_init();
 void fish_deinit();
 void fish_update();
@@ -18,4 +19,20 @@ struct Fdata
 
 };
 
+enum F_angle
+{
+	F_UP,
+	F_DAWN,
+	F_LEFT,
+	F_RIGHT
+
+};
+enum A_type
+{
+	STRAIGHT,//直線
+	LEFT,
+	RIGHT,
+
+
+};
 #endif//FISH_H

@@ -19,7 +19,7 @@ struct OBJ2D
 	VECTOR2				texSize;
 	VECTOR2				pivot;
 	VECTOR4				color;
-
+	VECTOR2				size;
 
 	VECTOR2				speed;
 	int					act;
@@ -27,6 +27,7 @@ struct OBJ2D
 	int					animeTimer;
 
 	float				angle;
+
 
 	VECTOR2				scroll;
 
@@ -36,11 +37,15 @@ struct OBJ2D
 
 	float				radius;		//当たり判定の半径
 
-	float				basicSpeed; //基礎スピード
-
-
+	float				FSpeed; 
+	float				basicSpeed;
+	float				anglememoy;
+	int				Out_of_range;//範囲外かどうか判断用
+	int				Out_of_judge;//範囲外かどうか判断用
+	int				Out_of_range_count; //でない場合の角度保持用
 	bool			    exist;		//現在生成されているか
 	int                 hit_ef; //ヒットエフェクト用
+	int					act_type; //行動種類;
 
 	float sun_color;
 	OBJ2D* hitObj;		//前回攻撃がヒットした敵用ポインタ

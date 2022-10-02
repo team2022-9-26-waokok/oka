@@ -49,16 +49,5 @@ void map_render()
 {
 
 
-	//デバック用
-	/*for (int y = 0; y < 14; y++)
-	{
-		primitive::line(0,y * 64 + map.pos.y + map.scroll.y,
-			SCREEN_W,y * 64 + map.pos.y + map.scroll.y, 0, 1, 0, 1, 1);
-	}
-
-	for (int x = 0; x < 22; x++)
-	{
-		primitive::line(x * 64 + map.pos.x + map.scroll.x, 0,
-			x * 64 + map.pos.x + map.scroll.x, SCREEN_H, 0, 1, 0, 1, 1);
-	}*/
+	GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.2f, 0.6f, 1.0f, 0.4);
 }

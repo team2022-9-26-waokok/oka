@@ -6,12 +6,23 @@ extern int title_timer;
 extern int game_state;
 
 
+
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
 	// ゲームライブラリの初期設定
 	GameLib::init(L"自分でプロジェクトを作成", SCREEN_W, SCREEN_H);
 	//①タイトルの初期設定
 	title_init();
+
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+
+	// Build atlas
+	unsigned char* tex_pixels = NULL;
+	int tex_w, tex_h;
+	io.Fonts->GetTexDataAsRGBA32(&tex_pixels, &tex_w, &tex_h);
 	// ゲームループ
 	while (GameLib::gameLoop())
 	{
@@ -75,6 +86,7 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		debug::setString("title_timer:%d", title_timer);
 		debug::setString("game_state:%d", game_state);
 		debug::setString("game_timer:%d", game_timer);
+		debug::setString("fish_MAX:%d", fish_MAX);
 		// 画面を描画する
 		GameLib::present(1, 0);
 	}
@@ -92,5 +104,6 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		break;
 	}
 	// ゲームライブラリの終了処理
+	ImGui::DestroyContext();
 	GameLib::uninit();
 }

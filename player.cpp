@@ -57,7 +57,7 @@ void player_update()
 		player = {};
 		player.timer = 0;
 		player.pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
-		player.scale = { 2.0f,2.0f };
+		player.scale = { 1.5f,1.5f };
 		player.texPos = { 0,0 };
 		player.texSize = {64,64};
 		player.pivot = {32,32};
@@ -82,7 +82,14 @@ void player_update()
 			player.pos.y = cursor_posY;
 			//camera_scroll(&player);
 
-			if (TRG(0) & PAD_TRG1)//バックスペースでタイトルへ戻る
+			if (TRG(0) & PAD_TRG3 && fish_MAX <= 58)
+			{
+				fish_MAX += 3;
+
+			}
+
+
+			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL_TRANS;
 				game_timer = 0;
@@ -119,7 +126,7 @@ void player_update()
 			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL;
-				player.scale = { 2.0f,2.0f };
+				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 
 			}
@@ -149,6 +156,14 @@ void player_update()
 			if (player_time >= 240.0f)
 			{
 				player_time = 0.0f;
+
+			}
+			if (TRG(0) & PAD_TRG2)
+			{
+				player_act = NORMAL;
+				player.scale = { 1.5f,1.5f };
+				fish_MAX = 5;
+				game_timer = 0;
 
 			}
 			battle_ber;
@@ -205,9 +220,17 @@ void player_render()
 
 void battle_render()
 {
-	primitive::rect(player.pos.x + player.scroll.x-250/2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f,0.5f);
-	primitive::rect(player.pos.x + player.scroll.x-250/2+ player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f,1.0f);
+	if (player.pos.y >= 720 / 2)
+	{
+		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+	}
+	else
+	{
+		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
 
+	}
 
 }
 

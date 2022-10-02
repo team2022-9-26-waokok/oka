@@ -1,6 +1,8 @@
 #ifndef ALL_H
 #define ALL_H
 // システムやライブラリのヘッダーファイルは上の方へ
+#include "../ImGui/imgui.h"
+#include "../ImGui/imguiCtrl.h"
 #include "../GameLib/game_lib.h"
 #include "../GameLib/input_manager.h"
 #include "../GameLib/obj2d_data.h"
@@ -14,6 +16,7 @@
 #include "camera.h"
 #include "player.h"
 #include "fish.h"
+#include "map.h"
 #include "easing.h"
 
 
