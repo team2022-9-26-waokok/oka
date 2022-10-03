@@ -58,7 +58,7 @@ void fish_update()
 			fish[i].pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
 			fish[i].scale = { 1.0f,1.0f };
 			fish[i].texPos = { 0,0 };
-			fish[i].texSize = { 32,64 };
+			fish[i].texSize = { 128, 128};
 			fish[i].pivot = { 16,16 };
 			fish[i].angle = ToRadian(0);
 			fish[i].color = { 1.0f,1.0f,1.0f,1.0f };
@@ -84,6 +84,7 @@ void fish_update()
 			//êFÇÒÇ»èÓïÒïtÇØ
 
 			fish[i].exist = true;
+
 			fish[i].FSpeed = (rand() % 5* 0.1) + (rand() % 5 * 0.1 )+ 0.5f;
 			direction = rand() % 3 + rand() % 2;
 			FRandMemory = rand() % 95 - 44;
