@@ -261,6 +261,7 @@ void fish_render()
 //	FdrawImgui();
 	for (int i = 0; i < fish_MAX; i++)
 	{
+<<<<<<< HEAD
 
 		if (fish[i].exist == true)
 		{
@@ -270,6 +271,9 @@ void fish_render()
 		}
 
 
+=======
+		//sprite_render()
+>>>>>>> origin/tukasa
 	}
 
 }
