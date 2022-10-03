@@ -87,12 +87,8 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		debug::setString("title_timer:%d", title_timer);
 		debug::setString("game_state:%d", game_state);
 		debug::setString("game_timer:%d", game_timer);
-<<<<<<< HEAD
 		debug::setString("fish_MAX:%d", fish_MAX);
-=======
-		debug::setString("gatya_state:%d", gatya_state);
-		debug::setString("gatya_timer:%d", gatya_timer);
->>>>>>> origin/tukasa
+
 		// ‰æ–Ê‚ð•`‰æ‚·‚é
 		GameLib::present(1, 0);
 	}

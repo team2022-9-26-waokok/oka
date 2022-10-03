@@ -50,13 +50,13 @@ void gatya_update()
 
 		//ƒKƒ`ƒƒ‚ðˆø‚­ ’P”­
 		if (TRG(0) & PAD_UP) {
-			a = rand % 100;
+			//a = rand % 100;
 		}
 
 		//ƒKƒ`ƒƒ‚ðˆø‚­ ‚P‚P˜A
 		if (TRG(0) & PAD_DOWN) {
 			for (int i = 0; i < 12; i++) {
-				a = rand % 100;
+				//a = rand % 100;
 			}
 		}
 		debug::setString("%d",a);

@@ -261,7 +261,6 @@ void fish_render()
 //	FdrawImgui();
 	for (int i = 0; i < fish_MAX; i++)
 	{
-<<<<<<< HEAD
 
 		if (fish[i].exist == true)
 		{
@@ -269,22 +268,6 @@ void fish_render()
 				fish[i].size.x, fish[i].size.y, 0, 0, 128, 128, 64, 64, fish[i].angle, fish[i].color.x, fish[i].color.y, fish[i].color.z, fish[i].color.w);
 			//GameLib::primitive::rect(fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) *200, fish[i].pos.y + fish[i].scroll.y- cosf(fish[i].angle)*200, 10, 10,fish[i].angle);
 		}
-
-
-=======
-		//sprite_render()
->>>>>>> origin/tukasa
 	}
-
 }
 
-
-void FdrawImgui()
-{
-#ifdef USE_IMGUI
-
-	ImGui::SliderFloat("x", &fish[1].pos.x, 0, 1280);
-	
-	ImGui::End();
-#endif	
-}
