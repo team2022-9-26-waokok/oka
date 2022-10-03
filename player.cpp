@@ -10,6 +10,10 @@ float battle_ber;
 float memory;
 bool nomal_trans_easing;
 
+int player_updown;
+int player_up_down;
+
+
 struct PLAYER_DATA
 {
 	Sprite* spr;
@@ -70,6 +74,10 @@ void player_update()
 
 		player.basicSpeed = 20;
 		player_act = 0;
+
+		player_updown = 2;
+		player_up_down = 0;
+		
 		++player_state;
 		/*fallthrough*/
 
@@ -137,6 +145,18 @@ void player_update()
 				game_timer = 0;
 
 			}
+			for (int i = 0; i < fish_MAX; i++)
+			{
+				if (TRG(0) & PAD_TRG2 && fish[i].exist == true && 
+					fish[i].pos.x + 50 + fish[i].scroll.x + sinf(fish[i].angle) * 200 &&
+					fish[i].pos.x - 50 + fish[i].scroll.x + sinf(fish[i].angle) * 200 &&
+					fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 <= player.pos.y &&
+					fish[i].pos.y + 100 + fish[i].scroll.y - cosf(fish[i].angle) * 200 >= player.pos.y)
+				{
+					player_act = FISHING_BTTLE;
+				}
+			}
+
 			break;
 		case FISHING_BTTLE_TRANS:
 			player.pos.y += 0.1f;
@@ -154,6 +174,17 @@ void player_update()
 
 			player_time += 5.0f;
 			player_ber = player_time;
+			
+			if (player_updown % 30 == 0)
+			{
+				player_up_down += 10.0f;
+			}
+			if (player_updown % 30 == 15)
+			{
+				player_up_down -= 10.0f;
+			}
+			player_updown++;
+			
 			if (player_time >= 240.0f)
 			{
 				player_time = 0.0f;
@@ -239,7 +270,7 @@ void plrender()
 {
 	sprite_render(
 		player_data.spr,
-		player.pos.x + player.scroll.x, player.pos.y + player.scroll.y,//player.scrollはマウスカーソルによって移動した座標を表す
+		player.pos.x + player.scroll.x, player.pos.y + player.scroll.y + player_up_down,//player.scrollはマウスカーソルによって移動した座標を表す
 		player.scale.x, player.scale.y,
 		player.texPos.x, player.texPos.y,
 		player.texSize.x, player.texSize.y,

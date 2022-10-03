@@ -4,7 +4,7 @@
 
 
 #define type_num 5
-
+extern OBJ2D fish[50];
 extern int fish_MAX;
 void fish_init();
 void fish_deinit();
