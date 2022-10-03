@@ -4,7 +4,8 @@ int nextScene = SCENE_TITLE;
 extern int title_state;
 extern int title_timer;
 extern int game_state;
-
+extern int gatya_timer;
+extern int gatya_state;
 
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
@@ -75,6 +76,8 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		debug::setString("title_timer:%d", title_timer);
 		debug::setString("game_state:%d", game_state);
 		debug::setString("game_timer:%d", game_timer);
+		debug::setString("gatya_state:%d", gatya_state);
+		debug::setString("gatya_timer:%d", gatya_timer);
 		// ‰æ–Ê‚ð•`‰æ‚·‚é
 		GameLib::present(1, 0);
 	}
