@@ -74,6 +74,7 @@ void player_update()
 		/*fallthrough*/
 
 	case 2:
+		
 		camera_scroll(&player);
 		switch (player_act)
 		{

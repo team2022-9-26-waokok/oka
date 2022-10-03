@@ -50,7 +50,7 @@ void fish_update()
 	case 1:
 
 		fish_MAX = 5;
-
+		srand(time(0));
 		for (int i = 0; i < 50; i++)
 		{
 			fish[i] = {};
@@ -124,7 +124,7 @@ void fish_update()
 				fish[i].pos.x = SCREEN_W+25;
 				fish[i].pos.y = (rand() % 360/2)+ (rand() % 360 / 2) + 180;
 			}
-
+			
 
 		}
 		
@@ -136,6 +136,7 @@ void fish_update()
 			
 			if(fish[i].exist == true);
 			{
+				anime(&fish[i], 8, 4, 0, true);
 				if (i > 10)
 				{
 					if (i % 10 != 0)
@@ -172,6 +173,7 @@ void fish_update()
 					fish[i].angle += ToRadian(0.5);
 						break;
 				}
+				
 				camera_scroll(&fish[i]);
 				fish[i].timer++;
 			}
