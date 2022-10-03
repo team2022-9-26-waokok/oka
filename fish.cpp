@@ -58,7 +58,7 @@ void fish_update()
 			fish[i].pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
 			fish[i].scale = { 1.0f,1.0f };
 			fish[i].texPos = { 0,0 };
-			fish[i].texSize = { 32,64 };
+			fish[i].texSize = { 128,128 };
 			fish[i].pivot = { 16,16 };
 			fish[i].angle = ToRadian(0);
 			fish[i].color = { 1.0f,1.0f,1.0f,1.0f };
