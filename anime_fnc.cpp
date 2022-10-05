@@ -30,4 +30,5 @@ bool anime(OBJ2D* obj, int total, int frame, float anime_start, bool loop)
 	++obj->animeTimer;
 
 	return false;
+
 }
