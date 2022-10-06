@@ -46,7 +46,8 @@ struct OBJ2D
 	bool			    exist;		//現在生成されているか
 	int                 hit_ef; //ヒットエフェクト用
 	int					act_type; //行動種類;
-
+	int					act_num; //行動種類;
+	int				rea;
 	float sun_color;
 	OBJ2D* hitObj;		//前回攻撃がヒットした敵用ポインタ
 };
