@@ -1,4 +1,5 @@
 #include "all.h"
+#include<math.h>
 
 int player_state;
 
@@ -13,6 +14,12 @@ bool nomal_trans_easing;
 int player_updown;
 int player_up_down;
 
+float distance_x;
+float distance_y;
+float start_x;
+float start_y;
+float end_x;
+float end_y;
 
 struct PLAYER_DATA
 {
@@ -143,21 +150,32 @@ void player_update()
 			{
 				player_act = FISHING_BTTLE_TRANS;
 				game_timer = 0;
-
 			}
 			for (int i = 0; i < fish_MAX; i++)
 			{
-				if (TRG(0) & PAD_TRG2 && fish[i].exist == true && 
-					fish[i].pos.x + 50 + fish[i].scroll.x + sinf(fish[i].angle) * 200 &&
-					fish[i].pos.x - 50 + fish[i].scroll.x + sinf(fish[i].angle) * 200 &&
-					fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 <= player.pos.y &&
-					fish[i].pos.y + 100 + fish[i].scroll.y - cosf(fish[i].angle) * 200 >= player.pos.y)
+				if (fish[i].pos.x - player.pos.x <= 75)
 				{
-					player_act = FISHING_BTTLE;
-				}
-			}
+					if (player.pos.x - fish[i].pos.x <= 75)
+					{
+						if (player.pos.y <= fish[i].pos.y)
+						{
+							if (player.pos.y - fish[i].pos.y >= 150) {
 
+							}
+						}
+					}
+					player.act = FISHING_BTTLE_TRANS;
+				}
+					/*if (fish[i].pos.x - player.pos.x <= 75 && fish[i].pos.x - player.pos.x >= -75 &&
+						player.pos.y <= fish[i].pos.y && player.pos.y - fish[i].pos.y >= 150)
+					{
+						player.act = FISHING_BTTLE_TRANS;
+						break;
+					}*/
+					
+			}
 			break;
+
 		case FISHING_BTTLE_TRANS:
 			player.pos.y += 0.1f;
 			player.color.x += 0.02f;
@@ -171,7 +189,6 @@ void player_update()
 			break;
 		case FISHING_BTTLE:
 			
-
 			player_time += 5.0f;
 			player_ber = player_time;
 			
@@ -217,7 +234,7 @@ void player_render()
 		case NORMAL:
 		
 				sprite_render(
-					player_data.spr,
+				player_data.spr,
 				player.pos.x, player.pos.y,//player.scrollはマウスカーソルによって移動した座標を表す
 				player.scale.x,player.scale.y,
 				player.texPos.x,player.texPos.y,
