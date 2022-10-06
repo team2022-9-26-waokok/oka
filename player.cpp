@@ -220,15 +220,123 @@ void player_update()
 			break;
 		}
 
+		/// <summary>
+		/// FEVER中の処理
+		/// </summary>
+		case FEVER:
+			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			player.pos.x = cursor_posX;
+			player.pos.y = cursor_posY;
+			//camera_scroll(&player);
+			if (TRG(0) & PAD_TRG3 && fish_MAX <= 56)
+			{
+				fish_MAX += 2;
+			}
+			if (TRG(0) & PAD_TRG1)
+			{
+				player_act = FEVER_TRANS;
+				game_timer = 0;
+				memory = player.pos.y;
+			}
+			break;
+		case FEVER_TRANS:
+			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
+			{
+				player_act = FEVERFISHING;
+				nomal_trans_easing = false;
+			}
+			else if ((float)game_timer * 0.1f == 1.5)
+			{
+				nomal_trans_easing = true;
+				game_timer = 0;
+			}
+			if (nomal_trans_easing)//落下
+			{
+				player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+				player.scale -= {0.05f, 0.05f};
+				player.color.x -= 0.02f;
+				player.color.y -= 0.02f;
+			}
+			else
+			{
+				player.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+				player.scale += { 0.05f, 0.05f };
+			}
+			break;
+		case FEVERFISHING:
+			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			if (TRG(0) & PAD_TRG1)
+			{
+				player_act = FEVER;
+				player.scale = { 1.5f,1.5f };
+				player.color = { 1.0f,1.0f,1.0f,1.0f };
+			}
+			if (TRG(0) & PAD_TRG2)
+			{
+				player_act = FEVERFISHING_BTTLE_TRANS;
+				game_timer = 0;
+			}
+			for (int i = 0; i < fish_MAX; i++)
+			{
+				if (fish[i].pos.x - player.pos.x <= 75)
+				{
+					if (player.pos.x - fish[i].pos.x <= 75)
+					{
+						if (player.pos.y <= fish[i].pos.y)
+						{
+							if (player.pos.y - fish[i].pos.y >= 150) 
+							{
+							}
+						}
+					}
+					player.act = FEVERFISHING_BTTLE_TRANS;
+				}
+			}
+			break;
+		case FEVERFISHING_BTTLE_TRANS:
+			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			player.pos.y += 0.1f;
+			player.color.x += 0.02f;
+			player.color.y += 0.02f;
+
+			if ((float)game_timer * 0.1f == 1)
+			{
+				player_act = FEVERFISHING_BTTLE;
+				player_time = 0;
+			}
+			break;
+		case FEVERFISHING_BTTLE:
+			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			player_time += 5.0f;
+			player_ber = player_time;
+			if (player_updown % 30 == 0)
+			{
+				player_up_down += 10.0f;
+			}
+			if (player_updown % 30 == 15)
+			{
+				player_up_down -= 10.0f;
+			}
+			player_updown++;
+			if (player_time >= 240.0f)
+			{
+				player_time = 0.0f;
+			}
+			if (TRG(0) & PAD_TRG2)
+			{
+				player_act = FEVER;
+				player.scale = { 1.5f,1.5f };
+				fish_MAX = 5;
+				game_timer = 0;
+			}
+			battle_ber;
+			break;
 	}
-
-
 }
 
 void player_render()
 {
-
-
 		switch (player_act)
 		{
 		case NORMAL:
@@ -244,9 +352,7 @@ void player_render()
 				player.color.x, player.color.y, player.color.z, player.color.w
 			);
 			break;		
-
 		case NORMAL_TRANS:
-
 			plrender();
 			break;
 		case FISHING:
@@ -262,8 +368,35 @@ void player_render()
 		case FISHING_BTTLE_TRANS:
 			plrender();
 			break;
+		case FEVER:
+			sprite_render(
+				player_data.spr,
+				player.pos.x, player.pos.y,//player.scrollはマウスカーソルによって移動した座標を表す
+				player.scale.x, player.scale.y,
+				player.texPos.x, player.texPos.y,
+				player.texSize.x, player.texSize.y,
+				player.pivot.x, player.pivot.y,
+				player.angle,
+				player.color.x, player.color.y, player.color.z, player.color.w
+			);
+			break;
+		case FEVER_TRANS:
+			plrender();
+			break;
+		case FEVERFISHING:
+			plrender();
+			break;
+		case FEVERFISHING_TRANS:
+			plrender();
+			break;
+		case FEVERFISHING_BTTLE:
+			plrender();
+			battle_render();
+			break;
+		case FEVERFISHING_BTTLE_TRANS:
+			plrender();
+			break;
 		}
-
 }
 
 
