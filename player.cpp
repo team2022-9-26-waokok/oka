@@ -131,12 +131,7 @@ void player_update()
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 
 			}
-			if (TRG(0) & PAD_TRG2)
-			{
-				player_act = FISHING_BTTLE_TRANS;
-				game_timer = 0;
 
-			}
 			break;
 		case FISHING_BTTLE_TRANS:
 			player.pos.y += 0.1f;

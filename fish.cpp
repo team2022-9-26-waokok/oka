@@ -1,4 +1,5 @@
 #include "all.h"
+#include <math.h>
 
 int fish_state;
 int fish_MAX;
@@ -159,111 +160,151 @@ void fish_update()
 			
 			if(fish[i].exist == true);
 			{
-				
-
-				if (i > 10)
+				switch (fish[i].act)
 				{
-					if (i % 10 != 0)
+				case 0:
+
+
+					if (i > 10)
 					{
-						if (fish[i].timer % (30 + (i % 10) * 3) == 0)
+						if (i % 10 != 0)
 						{
-							fish[i].act_type = rand() % 3;
+							if (fish[i].timer % (30 + (i % 10) * 3) == 0)
+							{
+								fish[i].act_type = rand() % 3;
+							}
+						}
+
+					}
+					else if (fish[i].timer % (30 + i * 3) == 0)
+					{
+						fish[i].act_type = rand() % 3;
+					}
+
+
+					if (hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x) }, 80, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3) == false)
+					{
+						switch (fish[i].act_type)
+						{
+						case A_type::STRAIGHT:
+
+							fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].act_num = 0;
+							fish[i].texPos.x = fish[i].texSize.x * 0;
+
+							break;
+						case A_type::LEFT:
+
+							fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].angle -= ToRadian(0.5);
+							fish[i].act_num = 2;
+							fish[i].texPos.x = fish[i].texSize.x * 2;
+							break;
+						case A_type::RIGHT:
+							fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
+							fish[i].angle += ToRadian(0.5);
+							fish[i].act_num = 4;
+
+							fish[i].texPos.x = fish[i].texSize.x * 4;
+							break;
 						}
 					}
+					camera_scroll(&fish[i]);
+					fish[i].timer++;
 
-				}
-				else if (fish[i].timer % (30 + i * 3) == 0)
-				{
-					fish[i].act_type = rand() % 3;
-				}
-
-
-
-
-				switch (fish[i].act_type)
-				{
-				case A_type::STRAIGHT:
-
-					fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].act_num = 0;
-					fish[i].texPos.x = fish[i].texSize.x * 0;
-
-					break;
-				case A_type::LEFT:
-
-					fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].angle -= ToRadian(0.5);
-					fish[i].act_num = 2;
-					fish[i].texPos.x = fish[i].texSize.x * 2;
-					break;
-				case A_type::RIGHT:
-					fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
-					fish[i].angle += ToRadian(0.5);
-					fish[i].act_num = 4;
-
-					fish[i].texPos.x = fish[i].texSize.x * 4;
-					break;
-				}
-
-				camera_scroll(&fish[i]);
-				fish[i].timer++;
 
 				
 
-				//anime(&fish[i], 5, 1, 3, true);
 
 
-				//ここから範囲外から出るかどうかとか～動きをもっと良くする用-------------------------------------------
 
-				if ((fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * 200 >= 1288 || fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * 200 <= -8 ||
-					fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 <= -8 || fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 >= 728) && fish[i].Out_of_range == 0)
-				{
-					//fish[i].color.x = 3.0f;
-					//fish[i].color.y = 2.0f;
-					//fish[i].color.z = 2.0f;
-					fish[i].Out_of_range = 1;
-					//fish_MAX += 1;
-				}
-				else
-				{
-					//fish[i].color.x = 1.0f;
-					//fish[i].color.y = 1.0f;
-					//fish[i].color.z = 1.0f;
+					//ここから範囲外から出るかどうかとか～動きをもっと良くする用-------------------------------------------
 
-				}
-
-
-				if (fish[i].Out_of_range == 1)
-				{
-					fish[i].Out_of_judge = rand() % 100;
-					if (fish[i].Out_of_judge >= 60)
+					if ((fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * 200 >= 1288 || fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * 200 <= -8 ||
+						fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 <= -8 || fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * 200 >= 728) && fish[i].Out_of_range == 0)
 					{
-						fish[i].Out_of_range = 2;
-					}
-					if (fish[i].Out_of_judge <= 30)
-					{
-						fish[i].Out_of_range = 4;
+						//fish[i].color.x = 3.0f;
+						//fish[i].color.y = 2.0f;
+						//fish[i].color.z = 2.0f;
+						fish[i].Out_of_range = 1;
+						//fish_MAX += 1;
 					}
 					else
 					{
-						fish[i].Out_of_range = 2;
-					}
-				}
+						//fish[i].color.x = 1.0f;
+						//fish[i].color.y = 1.0f;
+						//fish[i].color.z = 1.0f;
 
-				if (fish[i].Out_of_range == 2)
-				{
-					fish[i].Out_of_range_count += 2;
-					fish[i].angle += ToRadian(2);
-					if (fish[i].Out_of_range_count >= 85)
+					}
+
+
+					if (fish[i].Out_of_range == 1)
 					{
-						fish[i].Out_of_range = 0;
+						fish[i].Out_of_judge = rand() % 100;
+						if (fish[i].Out_of_judge >= 60)
+						{
+							fish[i].Out_of_range = 2;
+						}
+						if (fish[i].Out_of_judge <= 30)
+						{
+							fish[i].Out_of_range = 4;
+						}
+						else
+						{
+							fish[i].Out_of_range = 2;
+						}
 					}
 
+					if (fish[i].Out_of_range == 2 && hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x) }, 80, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3) == false)
+					{
+						fish[i].Out_of_range_count += 2;
+						fish[i].angle += ToRadian(2);
+						if (fish[i].Out_of_range_count >= 85)
+						{
+							fish[i].Out_of_range = 0;
+						}
+
+					}
+
+
+
+				if (player_act == FISHING)
+				{
+					if (hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x) },100, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3))
+					{
+		
+					fish[i].memoy.x = (player.pos.x) - (fish[i].pos.x);
+
+					fish[i].memoy.y = (player.pos.y) - (fish[i].pos.y);
+
+
+				
+						fish[i].angle = atan2(fish[i].memoy.x * -1, fish[i].memoy.y) + ToRadian(180);
+						fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
+						fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
+						if (hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (60 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (60 * fish[i].size.x)},
+							10 * fish[i].size.x, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3))
+						{
+							player_act = FISHING_BTTLE_TRANS;
+							game_timer = 0;
+
+						}
+					}
+
+					
 				}
 
+			
+					break;
+				case 1:
+
+	
+
+					break;
+				}
 
 
 
@@ -299,7 +340,9 @@ void fish_render()
 		{
 			sprite_render(sprfish, fish[i].pos.x + fish[i].scroll.x, fish[i].pos.y + fish[i].scroll.y,
 				fish[i].size.x, fish[i].size.y, fish[i].texPos.x, fish[i].texPos.y, fish[i].texSize.x, fish[i].texSize.y, fish[i].pivot.x, fish[i].pivot.y, fish[i].angle, fish[i].color.x, fish[i].color.y, fish[i].color.z, fish[i].color.w);
-			//GameLib::primitive::rect(fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) *200, fish[i].pos.y + fish[i].scroll.y- cosf(fish[i].angle)*200, 10, 10,fish[i].angle);
+			//GameLib::primitive::rect(fish[i].pos.x + fish[i].scroll.x - sinf(fish[i].angle+ToRadian(45)) *200, fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle - ToRadian(45)) * 200, 10, 10,fish[i].angle);
+			//primitive::circle(fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120*fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x), 80, 1, 1, ToRadian(0), 1, 0, 0);
+			//primitive::circle(fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (60*fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (60 * fish[i].size.x), 10* fish[i].size.x, 1, 1, ToRadian(0), 1, 1, 1);
 		}
 	}
 }

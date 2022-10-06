@@ -28,5 +28,6 @@ enum playeract
 	GACHA,
 	COLLECTION
 };
+extern int player_act;
 
 #endif//PLAYER_H

@@ -27,6 +27,12 @@ enum F_angle
 	F_RIGHT
 
 };
+enum F_act
+{
+	F_NORMAL, 
+	F_FISHING,
+
+};
 enum A_type
 {
 	STRAIGHT,//íºê¸

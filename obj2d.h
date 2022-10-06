@@ -22,6 +22,7 @@ struct OBJ2D
 	VECTOR2				size;
 
 	VECTOR2				speed;
+	VECTOR2				memoy;
 	int					act;
 	int					anime;
 	int					animeTimer;
@@ -47,8 +48,12 @@ struct OBJ2D
 	int                 hit_ef; //ヒットエフェクト用
 	int					act_type; //行動種類;
 	int					act_num; //行動種類;
+	float               addangle;
 	int				rea;
 	float sun_color;
+
+
+	bool				look;
 	OBJ2D* hitObj;		//前回攻撃がヒットした敵用ポインタ
 };
 
