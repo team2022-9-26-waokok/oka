@@ -182,7 +182,7 @@ void fish_update()
 					}
 
 
-					if (hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x) }, 80, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3) == false)
+					if (player_act != FISHING || hitCheckCircle({ fish[i].pos.x + fish[i].scroll.x + sinf(fish[i].angle) * (120 * fish[i].size.x), fish[i].pos.y + fish[i].scroll.y - cosf(fish[i].angle) * (120 * fish[i].size.x) }, 80, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3) == false)
 					{
 						switch (fish[i].act_type)
 						{

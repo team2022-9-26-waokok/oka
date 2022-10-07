@@ -83,9 +83,9 @@ void player_update()
 			player.pos.y = cursor_posY;
 			//camera_scroll(&player);
 
-			if (TRG(0) & PAD_TRG3 && fish_MAX <= 56)
+			if (TRG(0) & PAD_TRG3 && fish_MAX <= 55)
 			{
-				fish_MAX += 2;
+				fish_MAX += 1;
 
 			}
 
