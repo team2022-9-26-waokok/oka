@@ -21,6 +21,9 @@ float start_y;
 float end_x;
 float end_y;
 
+int fever_timer; ///FEVERの継続時間(例：fever_timerが10以下ならFEVER状態)
+int fever_count; /// FEVERに入るカウント(特定の数でNOMALからFEVERに変更)
+
 struct PLAYER_DATA
 {
 	Sprite* spr;
@@ -84,6 +87,9 @@ void player_update()
 
 		player_updown = 2;
 		player_up_down = 0;
+
+		fever_timer = 0;
+		fever_count = 0;
 		
 		++player_state;
 		/*fallthrough*/
@@ -107,7 +113,14 @@ void player_update()
 
 			if (TRG(0) & PAD_TRG1)
 			{
-				player_act = NORMAL_TRANS;
+				if (fever_count > 10)
+				{
+					player_act = FEVER_TRANS;
+				}
+				else
+				{
+					player_act = NORMAL_TRANS;
+				}	
 				game_timer = 0;
 				memory = player.pos.y;
 			}
@@ -115,7 +128,14 @@ void player_update()
 		case NORMAL_TRANS:
 			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
 			{
-				player_act = FISHING;
+				if (fever_count > 10)
+				{
+					player_act = FEVERFISHING;
+				}
+				else
+				{
+					player_act = FISHING;
+				}
 				nomal_trans_easing = false;
 			}
 			else if ((float)game_timer * 0.1f == 1.5)
@@ -141,14 +161,28 @@ void player_update()
 		case FISHING:
 			if (TRG(0) & PAD_TRG1)
 			{
-				player_act = NORMAL;
+				if (fever_count > 10)
+				{
+					player_act = FEVER;
+				}
+				else
+				{
+					player_act = NORMAL;
+				}
 				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				player_act = FISHING_BTTLE_TRANS;
+				if (fever_count > 10)
+				{
+					player_act = FEVERFISHING_BTTLE_TRANS;
+				}
+				else
+				{
+					player_act = FISHING_BTTLE_TRANS;
+				}
 				game_timer = 0;
 			}
 			for (int i = 0; i < fish_MAX; i++)
@@ -225,6 +259,7 @@ void player_update()
 		/// </summary>
 		case FEVER:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			fever_timer++;
 			player.pos.x = cursor_posX;
 			player.pos.y = cursor_posY;
 			//camera_scroll(&player);
@@ -241,6 +276,7 @@ void player_update()
 			break;
 		case FEVER_TRANS:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			fever_timer++;
 			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
 			{
 				player_act = FEVERFISHING;
@@ -266,6 +302,7 @@ void player_update()
 			break;
 		case FEVERFISHING:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			fever_timer++;
 			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = FEVER;
@@ -296,6 +333,7 @@ void player_update()
 			break;
 		case FEVERFISHING_BTTLE_TRANS:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			fever_timer++;
 			player.pos.y += 0.1f;
 			player.color.x += 0.02f;
 			player.color.y += 0.02f;
@@ -308,6 +346,7 @@ void player_update()
 			break;
 		case FEVERFISHING_BTTLE:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+			fever_timer++;
 			player_time += 5.0f;
 			player_ber = player_time;
 			if (player_updown % 30 == 0)
