@@ -113,14 +113,7 @@ void player_update()
 
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (fever_count > 10)
-				{
-					player_act = FEVER_TRANS;
-				}
-				else
-				{
-					player_act = NORMAL_TRANS;
-				}	
+				player_act = NORMAL_TRANS;
 				game_timer = 0;
 				memory = player.pos.y;
 			}
@@ -128,14 +121,7 @@ void player_update()
 		case NORMAL_TRANS:
 			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
 			{
-				if (fever_count > 10)
-				{
-					player_act = FEVERFISHING;
-				}
-				else
-				{
-					player_act = FISHING;
-				}
+				player_act = FISHING;
 				nomal_trans_easing = false;
 			}
 			else if ((float)game_timer * 0.1f == 1.5)
@@ -148,8 +134,8 @@ void player_update()
 				{
 					player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f,1.0f, 3.0f, 1.0f)*4;
 					player.scale -= {0.05f, 0.05f};
-					player.color.x -= 0.02f;
-					player.color.y -= 0.02f;
+					//player.color.x -= 0.02f;
+					//player.color.y -= 0.02f;
 
 				}
 				else
@@ -161,29 +147,16 @@ void player_update()
 		case FISHING:
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (fever_count > 10)
-				{
-					player_act = FEVER;
-				}
-				else
-				{
-					player_act = NORMAL;
-				}
+				player_act = NORMAL;
+				
 				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				fever_count;
-				if (fever_count > 10)
-				{
-					player_act = FEVERFISHING_BTTLE_TRANS;
-				}
-				else
-				{
-					player_act = FISHING_BTTLE_TRANS;
-				}
+				player_act = FISHING_BTTLE_TRANS;
+				
 				game_timer = 0;
 			}
 			for (int i = 0; i < fish_MAX; i++)
@@ -199,34 +172,22 @@ void player_update()
 							}
 						}
 					}
-					if (fever_count > 10)
-					{
-						player_act = FEVERFISHING_BTTLE_TRANS;
-					}
-					else
-					{
-						player_act = FISHING_BTTLE_TRANS;
-					}
+					player_act = FISHING_BTTLE_TRANS;
+					
 				}
 					
 			}
 			break;
 
 		case FISHING_BTTLE_TRANS:
-			player.pos.y += 0.1f;
-			player.color.x += 0.02f;
-			player.color.y += 0.02f;
+			//player.pos.y += 0.1f;
+			//player.color.x += 0.02f;
+			//player.color.y += 0.02f;
 
 			if ((float)game_timer * 0.1f == 1)
 			{
-				if (fever_count > 10)
-				{
-					player_act = FEVERFISHING_BTTLE;
-				}
-				else
-				{
-					player_act = FISHING_BTTLE;
-				}
+				player_act = FISHING_BTTLE;
+				
 				player_time = 0;
 			}
 			break;
@@ -252,14 +213,8 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				if (fever_count > 10)
-				{
-					player_act = FEVER;
-				}
-				else
-				{
-					player_act = NORMAL;
-				}
+				player_act = NORMAL;
+				
 				player.scale = { 1.5f,1.5f };
 				fish_MAX = 5;
 				game_timer = 0;
@@ -285,14 +240,7 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVER_TRANS;
-				}
-				else
-				{
-					player_act = NORMAL_TRANS;
-				}
+				player_act = FEVER_TRANS;
 				
 				game_timer = 0;
 				memory = player.pos.y;
@@ -303,14 +251,8 @@ void player_update()
 			fever_timer++;
 			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVERFISHING;
-				}
-				else
-				{
-					player_act = FISHING;
-				}
+				player_act = FEVERFISHING;
+				
 				nomal_trans_easing = false;
 			}
 			else if ((float)game_timer * 0.1f == 1.5)
@@ -322,8 +264,8 @@ void player_update()
 			{
 				player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
 				player.scale -= {0.05f, 0.05f};
-				player.color.x -= 0.02f;
-				player.color.y -= 0.02f;
+				//player.color.x -= 0.02f;
+				//player.color.y -= 0.02f;
 			}
 			else
 			{
@@ -336,27 +278,15 @@ void player_update()
 			fever_timer++;
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVER;
-				}
-				else
-				{
-					player_act = NORMAL;
-				}
+				player_act = FEVER;
+				
 				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVERFISHING_BTTLE_TRANS;
-				}
-				else
-				{
-					player_act = FISHING_BTTLE_TRANS;
-				}
+				player_act = FEVERFISHING_BTTLE_TRANS;
+				
 				game_timer = 0;
 			}
 			for (int i = 0; i < fish_MAX; i++)
@@ -372,34 +302,22 @@ void player_update()
 							}
 						}
 					}
-					if (fever_timer <= 10.0f)
-					{
-						player_act = FEVERFISHING_BTTLE_TRANS;
-					}
-					else
-					{
-						player_act = FISHING_BTTLE_TRANS;
-					}
+					player_act = FEVERFISHING_BTTLE_TRANS;
+					
 				}
 			}
 			break;
 		case FEVERFISHING_BTTLE_TRANS:
 			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			fever_timer++;
-			player.pos.y += 0.1f;
-			player.color.x += 0.02f;
-			player.color.y += 0.02f;
+			//fever_timer++;
+			//player.pos.y += 0.1f;
+			//player.color.x += 0.02f;
+			//player.color.y += 0.02f;
 
 			if ((float)game_timer * 0.1f == 1)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVERFISHING_BTTLE;
-				}
-				else
-				{
-					player_act = FISHING_BTTLE;
-				}
+				player_act = FEVERFISHING_BTTLE;
+				
 				player_time = 0;
 			}
 			break;
@@ -423,14 +341,8 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				if (fever_timer <= 10.0f)
-				{
-					player_act = FEVER;
-				}
-				else
-				{
-					player_act = NORMAL;
-				}
+				player_act = FEVER;
+				
 				player.scale = { 1.5f,1.5f };
 				fish_MAX = 5;
 				game_timer = 0;
