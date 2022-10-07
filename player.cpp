@@ -198,14 +198,15 @@ void player_update()
 							}
 						}
 					}
-					player.act = FISHING_BTTLE_TRANS;
-				}
-					/*if (fish[i].pos.x - player.pos.x <= 75 && fish[i].pos.x - player.pos.x >= -75 &&
-						player.pos.y <= fish[i].pos.y && player.pos.y - fish[i].pos.y >= 150)
+					if (fever_count > 10)
 					{
-						player.act = FISHING_BTTLE_TRANS;
-						break;
-					}*/
+						player_act = FEVERFISHING_BTTLE_TRANS;
+					}
+					else
+					{
+						player_act = FISHING_BTTLE_TRANS;
+					}
+				}
 					
 			}
 			break;
@@ -217,7 +218,14 @@ void player_update()
 
 			if ((float)game_timer * 0.1f == 1)
 			{
-				player_act = FISHING_BTTLE;
+				if (fever_count > 10)
+				{
+					player_act = FEVERFISHING_BTTLE;
+				}
+				else
+				{
+					player_act = FISHING_BTTLE;
+				}
 				player_time = 0;
 			}
 			break;
@@ -243,7 +251,14 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				player_act = NORMAL;
+				if (fever_count > 10)
+				{
+					player_act = FEVER;
+				}
+				else
+				{
+					player_act = NORMAL;
+				}
 				player.scale = { 1.5f,1.5f };
 				fish_MAX = 5;
 				game_timer = 0;
@@ -269,7 +284,15 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG1)
 			{
-				player_act = FEVER_TRANS;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVER_TRANS;
+				}
+				else
+				{
+					player_act = NORMAL_TRANS;
+				}
+				
 				game_timer = 0;
 				memory = player.pos.y;
 			}
@@ -279,7 +302,14 @@ void player_update()
 			fever_timer++;
 			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
 			{
-				player_act = FEVERFISHING;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVERFISHING;
+				}
+				else
+				{
+					player_act = FISHING;
+				}
 				nomal_trans_easing = false;
 			}
 			else if ((float)game_timer * 0.1f == 1.5)
@@ -305,13 +335,27 @@ void player_update()
 			fever_timer++;
 			if (TRG(0) & PAD_TRG1)
 			{
-				player_act = FEVER;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVER;
+				}
+				else
+				{
+					player_act = NORMAL;
+				}
 				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				player_act = FEVERFISHING_BTTLE_TRANS;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVERFISHING_BTTLE_TRANS;
+				}
+				else
+				{
+					player_act = FISHING_BTTLE_TRANS;
+				}
 				game_timer = 0;
 			}
 			for (int i = 0; i < fish_MAX; i++)
@@ -327,7 +371,14 @@ void player_update()
 							}
 						}
 					}
-					player.act = FEVERFISHING_BTTLE_TRANS;
+					if (fever_timer <= 10.0f)
+					{
+						player_act = FEVERFISHING_BTTLE_TRANS;
+					}
+					else
+					{
+						player_act = FISHING_BTTLE_TRANS;
+					}
 				}
 			}
 			break;
@@ -340,7 +391,14 @@ void player_update()
 
 			if ((float)game_timer * 0.1f == 1)
 			{
-				player_act = FEVERFISHING_BTTLE;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVERFISHING_BTTLE;
+				}
+				else
+				{
+					player_act = FISHING_BTTLE;
+				}
 				player_time = 0;
 			}
 			break;
@@ -364,7 +422,14 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
-				player_act = FEVER;
+				if (fever_timer <= 10.0f)
+				{
+					player_act = FEVER;
+				}
+				else
+				{
+					player_act = NORMAL;
+				}
 				player.scale = { 1.5f,1.5f };
 				fish_MAX = 5;
 				game_timer = 0;
