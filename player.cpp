@@ -175,6 +175,7 @@ void player_update()
 			}
 			if (TRG(0) & PAD_TRG2)
 			{
+				fever_count;
 				if (fever_count > 10)
 				{
 					player_act = FEVERFISHING_BTTLE_TRANS;
