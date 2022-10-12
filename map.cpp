@@ -22,7 +22,7 @@ void map_update()
 	switch (map_state)
 	{
 	case 0:
-		sprMap = sprite_load(L"./Data/Images/map.PNG");
+		sprMap = sprite_load(L"./Data/Images/map.png");
 		
 		++map_state;
 		/*fallthrogh*/
@@ -49,5 +49,7 @@ void map_render()
 {
 
 
-	GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.2f, 0.6f, 1.0f, 0.4);
+
+	sprite_render(sprMap, map.pos.x + map.scroll.x - 40, map.pos.y + map.scroll.y, 1.3f, 1.3f, 0, 0, 1280, 720,100, 50);
+
 }

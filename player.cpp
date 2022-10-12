@@ -154,16 +154,35 @@ void player_update()
 				player_time = 0.0f;
 
 			}
-			if (TRG(0) & PAD_TRG2)
+			//if (TRG(0) & PAD_TRG2)
+			//{
+			//	player_act = NORMAL;
+			//	player.scale = { 1.5f,1.5f };
+			//	fish_MAX = 5;
+			//	game_timer = 0;
+
+			//}
+			if (TRG(0) & PAD_TRG1)
+			{
+				if (player_ber >= player.battle_pos_x - ((80 - 20 * player.battle_hani) / 2) && player_ber >= (250 - (player.battle_pos_x / 2)) + ((80 - 20 * player.battle_hani) / 2))
+				{
+					player.winbool =  true;
+					player_act = FISHUP;
+				}
+				player_act = FISHUP;
+			}
+
+			battle_ber;
+
+			break;
+		case  FISHUP:
+			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL;
 				player.scale = { 1.5f,1.5f };
-				fish_MAX = 5;
+				
 				game_timer = 0;
-
 			}
-			battle_ber;
-
 			break;
 		}
 
@@ -175,7 +194,9 @@ void player_update()
 void player_render()
 {
 
-
+	debug::setString("player_ber:%f", player_ber);
+	debug::setString("player_battle:%f", 250 - player.battle_pos_x/2);
+	debug::setString("player_battle -hani:%f", ((80 - 20 * player.battle_hani) / 2));
 		switch (player_act)
 		{
 		case NORMAL:
@@ -219,12 +240,16 @@ void battle_render()
 	if (player.pos.y >= 720 / 2)
 	{
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+		primitive::rect(player.pos.x + player.scroll.x - player.battle_pos_x / 2, player.pos.y + player.scroll.y - 60, 80-20 * player.battle_hani, 20, (80 - 20 * player.battle_hani)/2,0, ToRadian(0), 0.9f, 0.9f, 0.2f, 0.4f);
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+
 	}
 	else
 	{
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+		primitive::rect(player.pos.x + player.scroll.x - player.battle_pos_x / 2, player.pos.y + player.scroll.y + 60, 80-20 * player.battle_hani, 20, (80 - 20 * player.battle_hani) / 2, 0, ToRadian(0), 0.9f, 0.9f, 0.2f, 0.4f);
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+
 
 	}
 
@@ -241,7 +266,10 @@ void plrender()
 		player.pivot.x, player.pivot.y,
 		player.angle,
 		player.color.x, player.color.y, player.color.z, player.color.w);
-
+	if (player.winbool)
+	{
+		GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.1f, 0.1f, 0.1f, 0.5f);
+	}
 }
 
 

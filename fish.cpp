@@ -55,6 +55,7 @@ void fish_update()
 		for (int i = 0; i < 50; i++)
 		{
 			fish[i] = {};
+			fish[i].act = 0;
 			fish[i].timer = 0;
 			fish[i].pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
 			fish[i].scale = { 1.0f,1.0f };
@@ -75,9 +76,25 @@ void fish_update()
 		/*fallthrough*/
 
 	case 2:
-		// = rand() % 2;
-		
+		if (fish[i].exist == false)
+		{
+			// = rand() % 2;
+			fish[i] = {};
+			fish[i].timer = 0;
+			fish[i].pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
+			fish[i].scale = { 1.0f,1.0f };
+			fish[i].texPos = { 0,0 };
+			fish[i].texSize = { 128, 128 };
+			fish[i].pivot = { 16,16 };
+			fish[i].angle = ToRadian(0);
+			fish[i].color = { 1.0f,1.0f,1.0f,1.0f };
 
+			fish[i].level = 1;
+			fish[i].basicSpeed = 0;
+			fish[i].radius = 20;
+
+			fish[i].basicSpeed = 20;
+		}
 
 		for (int i = 0; i < fish_MAX; i++)
 		{
@@ -85,6 +102,7 @@ void fish_update()
 			//F‚ñ‚Èî•ñ•t‚¯
 
 			fish[i].exist = true;
+
 
 			fish[i].FSpeed = (rand() % 5* 0.1) + (rand() % 5 * 0.1 )+ 0.5f;
 			direction = rand() % 3 + rand() % 2;
@@ -289,6 +307,7 @@ void fish_update()
 							10 * fish[i].size.x, { player.pos.x + player.scroll.x, player.pos.y + player.scroll.y }, 3))
 						{
 							player_act = FISHING_BTTLE_TRANS;
+							fish[i].act = 1;
 							game_timer = 0;
 
 						}
@@ -300,9 +319,29 @@ void fish_update()
 			
 					break;
 				case 1:
+					camera_scroll(&fish[i]);
+					fish[i].timer++;
 
-	
+					fish[i].battle_hani = fish[i].size.x* fish[i].size.x;
+					player.battle_hani = fish[i].battle_hani;
+				
 
+					player.battle_pos_x = rand() % (250 - (int)(80 - 20 * player.battle_hani));
+					
+					fish[i].act = 2;
+					break;
+				case 2:
+					if (player_act == FISHUP)
+					{
+						if (TRG(0) & PAD_TRG1)
+						{
+							fish[i].exist = false;
+							fish[i].act = 0;
+						}
+					}
+					camera_scroll(&fish[i]);
+					fish[i].timer++;
+					
 					break;
 				}
 

@@ -35,9 +35,10 @@ struct OBJ2D
 	int					level;
 	int					direc;
 
-
+	bool				winbool;
 	float				radius;		//“–‚½‚è”»’è‚Ì”¼Œa
-
+	float				battle_hani;
+	float				battle_pos_x;
 	float				FSpeed; 
 	float				basicSpeed;
 	float				anglememoy;
