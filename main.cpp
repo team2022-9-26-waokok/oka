@@ -9,6 +9,7 @@ extern int game_state;
 extern int gatya_timer;
 extern int gatya_state;
 extern int TimeLimit;
+//extern int fevertimer;
 extern int score;
 
 
@@ -96,6 +97,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		std::stringstream ss;
 		ss << "SCORE:" << std::setw(6) << score;
 		text_out(1, ss.str().c_str(), 900, 15, 1, 1, 1.0f, 1.0f, 1.0f);
+		/*if (fevertimer < 0)
+		{
+			text_out(1, "FEVERTIME", 600, 350, 1, 1, 0.0f, 0.0f, 0.0f);
+		}*/
 
 
 

@@ -30,6 +30,8 @@ int keep_pos_x;
 int keep_pos_y;
 
 int score;
+int fevercount;
+int fevertimer;
 
 struct PLAYER_DATA
 {
@@ -104,6 +106,8 @@ void player_update()
 		keep_pos_y = 0;
 
 		score = 0;
+		fevercount = 1;
+		fevertimer = 0;
 		
 		++player_state;
 		/*fallthrough*/
@@ -112,6 +116,15 @@ void player_update()
 		
 		camera_scroll(&player);
 		TimeLimit--;
+		fevertimer--;
+		if (fevercount % 10 == 0)
+		{
+			fevertimer = 600;
+		}
+		if (fevertimer > 0)
+		{
+			text_out(1, "FEVERTIME", SCREEN_W / 2, SCREEN_H / 2, 5, 5, 0.0f, 0.0f, 0.0f);
+		}
 		
 		switch (player_act)
 		{
@@ -201,15 +214,33 @@ void player_update()
 					
 					if (TRG(0) & PAD_TRG2)
 					{
-						if (player_time > 80.0f && player_time < 160.0f)
+						if (fevertimer > 0)
 						{
-							score += 100;
-							fish[i].exist = false;
-							fish_MAX++;
+							if (player_time > 40.0f && player_time < 200.0f)
+							{
+								score += 250;
+								fevercount++;
+								fish[i].exist = false;
+								fish_MAX++;
+							}
+							else
+							{
+								fish[i].hang = false;
+							}
 						}
 						else
 						{
-							fish[i].hang = false;
+							if (player_time > 80.0f && player_time < 160.0f)
+							{
+								score += 100;
+								fevercount++;
+								fish[i].exist = false;
+								fish_MAX++;
+							}
+							else
+							{
+								fish[i].hang = false;
+							}
 						}
 						player_act = NORMAL;
 						player.scale = { 1.5f,1.5f };
