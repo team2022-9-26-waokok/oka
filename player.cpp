@@ -24,6 +24,13 @@ float end_y;
 int fever_timer; ///FEVERの継続時間(例：fever_timerが10以下ならFEVER状態)
 int fever_count; /// FEVERに入るカウント(特定の数でNOMALからFEVERに変更)
 
+int TimeLimit;
+
+int keep_pos_x;
+int keep_pos_y;
+
+int score;
+
 struct PLAYER_DATA
 {
 	Sprite* spr;
@@ -83,13 +90,20 @@ void player_update()
 		player.radius = 20;
 
 		player.basicSpeed = 20;
-		player_act = 0;
+		player_act = NORMAL;
 
 		player_updown = 2;
 		player_up_down = 0;
 
 		fever_timer = 0;
 		fever_count = 0;
+
+		TimeLimit = 3600;
+
+		keep_pos_x = 0;
+		keep_pos_y = 0;
+
+		score = 0;
 		
 		++player_state;
 		/*fallthrough*/
@@ -97,6 +111,8 @@ void player_update()
 	case 2:
 		
 		camera_scroll(&player);
+		TimeLimit--;
+		
 		switch (player_act)
 		{
 		case NORMAL:
@@ -107,10 +123,7 @@ void player_update()
 			if (TRG(0) & PAD_TRG3 && fish_MAX <= 56)
 			{
 				fish_MAX += 2;
-
 			}
-
-
 			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL_TRANS;
@@ -130,200 +143,83 @@ void player_update()
 				game_timer = 0;
 			}
 
-				if (nomal_trans_easing)//落下
-				{
-					player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f,1.0f, 3.0f, 1.0f)*4;
-					player.scale -= {0.05f, 0.05f};
-					//player.color.x -= 0.02f;
-					//player.color.y -= 0.02f;
-
-				}
-				else
-				{
-					player.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f,1.0f, 3.0f, 1.0f)*4;
-					player.scale += { 0.05f, 0.05f };
-				}
-			break;
-		case FISHING:
-			if (TRG(0) & PAD_TRG1)
-			{
-				player_act = NORMAL;
-				
-				player.scale = { 1.5f,1.5f };
-				player.color = { 1.0f,1.0f,1.0f,1.0f };
-
-			}
-			if (TRG(0) & PAD_TRG2)
-			{
-				player_act = FISHING_BTTLE_TRANS;
-				
-				game_timer = 0;
-			}
-			for (int i = 0; i < fish_MAX; i++)
-			{
-				if (fish[i].pos.x - player.pos.x <= 75)
-				{
-					if (player.pos.x - fish[i].pos.x <= 75)
-					{
-						if (player.pos.y <= fish[i].pos.y)
-						{
-							if (player.pos.y - fish[i].pos.y >= 150) {
-
-							}
-						}
-					}
-					player_act = FISHING_BTTLE_TRANS;
-					
-				}
-					
-			}
-			break;
-
-		case FISHING_BTTLE_TRANS:
-			//player.pos.y += 0.1f;
-			//player.color.x += 0.02f;
-			//player.color.y += 0.02f;
-
-			if ((float)game_timer * 0.1f == 1)
-			{
-				player_act = FISHING_BTTLE;
-				
-				player_time = 0;
-			}
-			break;
-		case FISHING_BTTLE:
-			
-			player_time += 5.0f;
-			player_ber = player_time;
-			
-			if (player_updown % 30 == 0)
-			{
-				player_up_down += 10.0f;
-			}
-			if (player_updown % 30 == 15)
-			{
-				player_up_down -= 10.0f;
-			}
-			player_updown++;
-			
-			if (player_time >= 240.0f)
-			{
-				player_time = 0.0f;
-
-			}
-			if (TRG(0) & PAD_TRG2)
-			{
-				player_act = NORMAL;
-				
-				player.scale = { 1.5f,1.5f };
-				fish_MAX = 5;
-				game_timer = 0;
-
-			}
-			battle_ber;
-
-			break;
-		}
-
-		/// <summary>
-		/// FEVER中の処理
-		/// </summary>
-		case FEVER:
-			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			fever_timer++;
-			player.pos.x = cursor_posX;
-			player.pos.y = cursor_posY;
-			//camera_scroll(&player);
-			if (TRG(0) & PAD_TRG3 && fish_MAX <= 56)
-			{
-				fish_MAX += 2;
-			}
-			if (TRG(0) & PAD_TRG1)
-			{
-				player_act = FEVER_TRANS;
-				
-				game_timer = 0;
-				memory = player.pos.y;
-			}
-			break;
-		case FEVER_TRANS:
-			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			fever_timer++;
-			if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
-			{
-				player_act = FEVERFISHING;
-				
-				nomal_trans_easing = false;
-			}
-			else if ((float)game_timer * 0.1f == 1.5)
-			{
-				nomal_trans_easing = true;
-				game_timer = 0;
-			}
 			if (nomal_trans_easing)//落下
 			{
-				player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+				player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f,1.0f, 3.0f, 1.0f)*4;
 				player.scale -= {0.05f, 0.05f};
 				//player.color.x -= 0.02f;
 				//player.color.y -= 0.02f;
 			}
 			else
 			{
-				player.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+				player.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f,1.0f, 3.0f, 1.0f)*4;
 				player.scale += { 0.05f, 0.05f };
 			}
 			break;
-		case FEVERFISHING:
-			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			fever_timer++;
+		case FISHING:
 			if (TRG(0) & PAD_TRG1)
 			{
-				player_act = FEVER;
-				
+				player_act = NORMAL;
 				player.scale = { 1.5f,1.5f };
 				player.color = { 1.0f,1.0f,1.0f,1.0f };
 			}
-			if (TRG(0) & PAD_TRG2)
-			{
-				player_act = FEVERFISHING_BTTLE_TRANS;
-				
-				game_timer = 0;
-			}
 			for (int i = 0; i < fish_MAX; i++)
 			{
-				if (fish[i].pos.x - player.pos.x <= 75)
+				if ((fish[i].pos.x - player.pos.x) * (fish[i].pos.x - player.pos.x) +
+					(fish[i].pos.y - player.pos.y) * (fish[i].pos.y - player.pos.y) < 75 * 75)
 				{
-					if (player.pos.x - fish[i].pos.x <= 75)
-					{
-						if (player.pos.y <= fish[i].pos.y)
-						{
-							if (player.pos.y - fish[i].pos.y >= 150) 
-							{
-							}
-						}
-					}
-					player_act = FEVERFISHING_BTTLE_TRANS;
-					
+					//fish[i].pos.x = player.pos.x;
+					//fish[i].pos.y = player.pos.y;
+					keep_pos_x = fish[i].pos.x;
+					keep_pos_y = fish[i].pos.y;
+					fish[i].hang = true;
+					player_act = FISHING_BTTLE_TRANS;
+					game_timer = 0;
 				}
 			}
+			if (TRG(0) & PAD_TRG2)
+			{
+				player_act = FISHING_BTTLE_TRANS;
+				game_timer = 0;
+			}
 			break;
-		case FEVERFISHING_BTTLE_TRANS:
-			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			//fever_timer++;
+		case FISHING_BTTLE_TRANS:
 			//player.pos.y += 0.1f;
 			//player.color.x += 0.02f;
 			//player.color.y += 0.02f;
-
 			if ((float)game_timer * 0.1f == 1)
 			{
-				player_act = FEVERFISHING_BTTLE;
-				
+				player_act = FISHING_BTTLE;
 				player_time = 0;
 			}
 			break;
-		case FEVERFISHING_BTTLE:
-			text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
-			fever_timer++;
+		case FISHING_BTTLE:
+			for (int i = 0; i < fish_MAX; i++)
+			{
+				if (fish[i].hang == true)
+				{
+					
+					if (TRG(0) & PAD_TRG2)
+					{
+						if (player_time > 80.0f && player_time < 160.0f)
+						{
+							score += 100;
+							fish[i].exist = false;
+							fish_MAX++;
+						}
+						else
+						{
+							fish[i].hang = false;
+						}
+						player_act = NORMAL;
+						player.scale = { 1.5f,1.5f };
+						fish_MAX = 5;
+						game_timer = 0;
+					}
+					fish[i].pos.x = keep_pos_x;
+					fish[i].pos.y = keep_pos_y;
+				}
+			}
 			player_time += 5.0f;
 			player_ber = player_time;
 			if (player_updown % 30 == 0)
@@ -339,16 +235,135 @@ void player_update()
 			{
 				player_time = 0.0f;
 			}
-			if (TRG(0) & PAD_TRG2)
-			{
-				player_act = FEVER;
-				
-				player.scale = { 1.5f,1.5f };
-				fish_MAX = 5;
-				game_timer = 0;
-			}
+			
 			battle_ber;
 			break;
+		}
+
+		/// <summary>
+		/// FEVER中の処理
+		/// </summary>
+		//case FEVER:
+		//	text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+		//	fever_timer++;
+		//	player.pos.x = cursor_posX;
+		//	player.pos.y = cursor_posY;
+		//	//camera_scroll(&player);
+		//	if (TRG(0) & PAD_TRG3 && fish_MAX <= 56)
+		//	{
+		//		fish_MAX += 2;
+		//	}
+		//	if (TRG(0) & PAD_TRG1)
+		//	{
+		//		player_act = FEVER_TRANS;
+		//		
+		//		game_timer = 0;
+		//		memory = player.pos.y;
+		//	}
+		//	break;
+		//case FEVER_TRANS:
+		//	text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+		//	fever_timer++;
+		//	if ((float)game_timer * 0.1f == 1 && nomal_trans_easing == true)
+		//	{
+		//		player_act = FEVERFISHING;
+		//		
+		//		nomal_trans_easing = false;
+		//	}
+		//	else if ((float)game_timer * 0.1f == 1.5)
+		//	{
+		//		nomal_trans_easing = true;
+		//		game_timer = 0;
+		//	}
+		//	if (nomal_trans_easing)//落下
+		//	{
+		//		player.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+		//		player.scale -= {0.05f, 0.05f};
+		//		//player.color.x -= 0.02f;
+		//		//player.color.y -= 0.02f;
+		//	}
+		//	else
+		//	{
+		//		player.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) * 4;
+		//		player.scale += { 0.05f, 0.05f };
+		//	}
+		//	break;
+		//case FEVERFISHING:
+		//	text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+		//	fever_timer++;
+		//	if (TRG(0) & PAD_TRG1)
+		//	{
+		//		player_act = FEVER;
+		//		
+		//		player.scale = { 1.5f,1.5f };
+		//		player.color = { 1.0f,1.0f,1.0f,1.0f };
+		//	}
+		//	if (TRG(0) & PAD_TRG2)
+		//	{
+		//		player_act = FEVERFISHING_BTTLE_TRANS;
+		//		
+		//		game_timer = 0;
+		//	}
+		//	for (int i = 0; i < fish_MAX; i++)
+		//	{
+		//		if (fish[i].pos.x - player.pos.x <= 75)
+		//		{
+		//			if (player.pos.x - fish[i].pos.x <= 75)
+		//			{
+		//				if (player.pos.y <= fish[i].pos.y)
+		//				{
+		//					if (player.pos.y - fish[i].pos.y >= 150) 
+		//					{
+		//					}
+		//				}
+		//			}
+		//			player_act = FEVERFISHING_BTTLE_TRANS;
+		//			
+		//		}
+		//	}
+		//	break;
+		//case FEVERFISHING_BTTLE_TRANS:
+		//	text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+		//	//fever_timer++;
+		//	//player.pos.y += 0.1f;
+		//	//player.color.x += 0.02f;
+		//	//player.color.y += 0.02f;
+
+		//	if ((float)game_timer * 0.1f == 1)
+		//	{
+		//		player_act = FEVERFISHING_BTTLE;
+		//		
+		//		player_time = 0;
+		//	}
+		//	break;
+		//case FEVERFISHING_BTTLE:
+		//	text_out(1, "FEVER TIME", SCREEN_W / 2, SCREEN_H / 2, 10, 10, 1.0f, 1.0f, 1.0f);
+		//	fever_timer++;
+		//	player_time += 5.0f;
+		//	player_ber = player_time;
+		//	if (player_updown % 30 == 0)
+		//	{
+		//		player_up_down += 10.0f;
+		//	}
+		//	if (player_updown % 30 == 15)
+		//	{
+		//		player_up_down -= 10.0f;
+		//	}
+		//	player_updown++;
+		//	if (player_time >= 240.0f)
+		//	{
+		//		player_time = 0.0f;
+		//	}
+		//	if (TRG(0) & PAD_TRG2)
+		//	{
+		//		player_act = FEVER;
+		//		
+		//		player.scale = { 1.5f,1.5f };
+		//		fish_MAX = 5;
+		//		game_timer = 0;
+		//	}
+		//	battle_ber;
+		//	break;
 	}
 }
 

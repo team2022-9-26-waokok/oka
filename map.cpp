@@ -49,5 +49,5 @@ void map_render()
 {
 
 
-	GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.2f, 0.6f, 1.0f, 0.4);
+	GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.66f, 0.78f, 0.86f);
 }

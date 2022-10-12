@@ -130,11 +130,11 @@ void game_update()
     case 2:
         //////// �ʏ펞 ////////
 
-        debug::setString("[Operation]");
-        debug::setString("Rotate : A, D");
-        debug::setString("Accel  : Up Arrow");
-        debug::setString("Brake  : Down Arrow");
-        debug::setString("");
+        //debug::setString("[Operation]");
+        //debug::setString("Rotate : A, D");
+        //debug::setString("Accel  : Up Arrow");
+        //debug::setString("Brake  : Down Arrow");
+        //debug::setString("");
 
         cursor_posX = getCursorPosX();
         cursor_posY = getCursorPosY();
