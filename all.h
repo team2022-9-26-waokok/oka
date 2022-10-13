@@ -23,8 +23,6 @@
 #include "judge.h"
 
 
-
-
 // 個々のファイルは下のほうへ
 #include "scene_game.h"
 #include "scene_title.h"
