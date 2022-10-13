@@ -1,4 +1,6 @@
 #include "all.h"
+#include<sstream>
+#include<iomanip>
 int curScene = SCENE_NONE;
 int nextScene = SCENE_TITLE;
 extern int title_state;
@@ -6,6 +8,9 @@ extern int title_timer;
 extern int game_state;
 extern int gatya_timer;
 extern int gatya_state;
+extern int TimeLimit;
+extern int fevertimer;
+extern int score;
 
 
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
@@ -88,6 +93,16 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		debug::setString("game_state:%d", game_state);
 		debug::setString("game_timer:%d", game_timer);
 		debug::setString("fish_MAX:%d", fish_MAX);
+		debug::setString("TimeLimit : %d", TimeLimit / 60);
+		std::stringstream ss;
+		ss << "SCORE:" << std::setw(6) << score;
+		text_out(1, ss.str().c_str(), 900, 15, 1, 1, 1.0f, 1.0f, 1.0f);
+		if (fevertimer < 0)
+		{
+			text_out(1, "FEVERTIME", 500, 15, 1, 1, 0.0f, 0.0f, 0.0f);
+		}
+
+
 
 		// ‰æ–Ê‚ð•`‰æ‚·‚é
 		GameLib::present(1, 0);

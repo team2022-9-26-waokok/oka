@@ -46,6 +46,7 @@ struct OBJ2D
 	int				Out_of_judge;//範囲外かどうか判断用
 	int				Out_of_range_count; //でない場合の角度保持用
 	bool			    exist;		//現在生成されているか
+	bool                hang;
 	int                 hit_ef; //ヒットエフェクト用
 	int					act_type; //行動種類;
 	int					act_num; //行動種類;

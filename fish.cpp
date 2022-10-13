@@ -102,6 +102,7 @@ void fish_update()
 			//F‚ñ‚Èî•ñ•t‚¯
 
 			fish[i].exist = true;
+			fish[i].hang = false;
 
 
 			fish[i].FSpeed = (rand() % 5* 0.1) + (rand() % 5 * 0.1 )+ 0.5f;

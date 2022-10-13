@@ -132,10 +132,18 @@ void game_update()
     case 2:
         //////// �ʏ펞 ////////
 
+<<<<<<< HEAD
         debug::setString("[Operation]");
         debug::setString("Accel  : Up Arrow");
         debug::setString("Brake  : Down Arrow");
         debug::setString("");
+=======
+        //debug::setString("[Operation]");
+        //debug::setString("Rotate : A, D");
+        //debug::setString("Accel  : Up Arrow");
+        //debug::setString("Brake  : Down Arrow");
+        //debug::setString("");
+>>>>>>> origin/washida
 
         cursor_posX = getCursorPosX();
         cursor_posY = getCursorPosY();

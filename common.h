@@ -24,5 +24,8 @@ extern int nextScene;
 extern float(* const ToRadian)(float);// 角度をラジアンに
 extern float(* const ToDegree)(float);// ラジアンを角度に
 extern int uniform_int(int n);
+<<<<<<< HEAD
 extern bool InArea(const VECTOR2& leftTop, const float& areaSizeW, const float& areaSizeT, const VECTOR2 point_);
+=======
+>>>>>>> origin/washida
 #endif // !COMMON_H

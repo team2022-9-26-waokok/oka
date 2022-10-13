@@ -49,7 +49,11 @@ void map_render()
 {
 
 
+<<<<<<< HEAD
 
 	sprite_render(sprMap, map.pos.x + map.scroll.x - 40, map.pos.y + map.scroll.y, 1.3f, 1.3f, 0, 0, 1280, 720,100, 50);
 
+=======
+	GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.66f, 0.78f, 0.86f);
+>>>>>>> origin/washida
 }
