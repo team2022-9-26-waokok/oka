@@ -326,18 +326,37 @@ void fish_update()
 					player.battle_hani = fish[i].battle_hani;
 				
 
-					player.battle_pos_x = rand() % (250 - (int)(80 - 20 * player.battle_hani));
-					
+					player.battle_pos_x = rand() %(250- (int)(80 - 20 * player.battle_hani));
+
 					fish[i].act = 2;
 					break;
 				case 2:
-					if (player_act == FISHUP)
+
+					if (player_act == FISHUP && player.winbool == true)
 					{
-						if (TRG(0) & PAD_TRG1)
+						if ((TRG(0) & PAD_TRG1)|| player_act == NORMAL)
 						{
 							fish[i].exist = false;
 							fish[i].act = 0;
 						}
+					}
+					else if (player_act == FISHUP)
+					{
+						fish[i].pos.y -= cosf(fish[i].angle) * fish[i].FSpeed;
+						fish[i].pos.x += sinf(fish[i].angle) * fish[i].FSpeed;
+						fish[i].color.w -= 0.05f;
+						if (fish[i].color.w <= 0.0f)
+						{
+							fish[i].exist = false;
+							fish[i].act = 0;
+							player.winbool = false;
+							player_act = NORMAL;
+							player.scale = { 1.5f,1.5f };
+							
+							game_timer = 0;
+						
+						}
+
 					}
 					camera_scroll(&fish[i]);
 					fish[i].timer++;

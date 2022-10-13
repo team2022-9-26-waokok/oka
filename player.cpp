@@ -1,7 +1,7 @@
 #include "all.h"
 
 int player_state;
-
+float blackcolor;
 OBJ2D player;
 int player_act;
 float player_time;
@@ -70,6 +70,7 @@ void player_update()
 
 		player.basicSpeed = 20;
 		player_act = 0;
+		blackcolor = 0;
 		++player_state;
 		/*fallthrough*/
 
@@ -95,6 +96,9 @@ void player_update()
 				player_act = NORMAL_TRANS;
 				game_timer = 0;
 				memory = player.pos.y;
+			
+				blackcolor = 0;
+				
 			}
 			break;
 		case NORMAL_TRANS:
@@ -162,12 +166,15 @@ void player_update()
 			//	game_timer = 0;
 
 			//}
+
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (player_ber >= player.battle_pos_x - ((80 - 20 * player.battle_hani) / 2) && player_ber >= (250 - (player.battle_pos_x / 2)) + ((80 - 20 * player.battle_hani) / 2))
+				if (player_ber >= player.battle_pos_x && player_ber <= player.battle_pos_x + (80 - 20 * player.battle_hani))
 				{
-					player.winbool =  true;
+					player.winbool = true;
+			
 					player_act = FISHUP;
+					break;
 				}
 				player_act = FISHUP;
 			}
@@ -176,11 +183,18 @@ void player_update()
 
 			break;
 		case  FISHUP:
+			
+
+			if (blackcolor <= 0.5f)
+			{
+				blackcolor += 0.1f;
+			}
 			if (TRG(0) & PAD_TRG1)
 			{
+				player.winbool = false;
 				player_act = NORMAL;
 				player.scale = { 1.5f,1.5f };
-				
+				blackcolor = 0;
 				game_timer = 0;
 			}
 			break;
@@ -195,7 +209,7 @@ void player_render()
 {
 
 	debug::setString("player_ber:%f", player_ber);
-	debug::setString("player_battle:%f", 250 - player.battle_pos_x/2);
+	debug::setString("player_battle:%f", player.battle_pos_x);
 	debug::setString("player_battle -hani:%f", ((80 - 20 * player.battle_hani) / 2));
 		switch (player_act)
 		{
@@ -230,6 +244,9 @@ void player_render()
 		case FISHING_BTTLE_TRANS:
 			plrender();
 			break;
+		case FISHUP:
+			plrender();
+			break;
 		}
 
 }
@@ -240,14 +257,14 @@ void battle_render()
 	if (player.pos.y >= 720 / 2)
 	{
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
-		primitive::rect(player.pos.x + player.scroll.x - player.battle_pos_x / 2, player.pos.y + player.scroll.y - 60, 80-20 * player.battle_hani, 20, (80 - 20 * player.battle_hani)/2,0, ToRadian(0), 0.9f, 0.9f, 0.2f, 0.4f);
+		primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250/2, player.pos.y + player.scroll.y - 60, 80-20 * player.battle_hani, 20,0,0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
 
 	}
 	else
 	{
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
-		primitive::rect(player.pos.x + player.scroll.x - player.battle_pos_x / 2, player.pos.y + player.scroll.y + 60, 80-20 * player.battle_hani, 20, (80 - 20 * player.battle_hani) / 2, 0, ToRadian(0), 0.9f, 0.9f, 0.2f, 0.4f);
+		primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250/2, player.pos.y + player.scroll.y + 60, 80-20 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
 		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
 
 
@@ -268,7 +285,7 @@ void plrender()
 		player.color.x, player.color.y, player.color.z, player.color.w);
 	if (player.winbool)
 	{
-		GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.1f, 0.1f, 0.1f, 0.5f);
+		GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.1f, 0.1f, 0.1f, blackcolor);
 	}
 }
 

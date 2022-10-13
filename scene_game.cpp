@@ -162,8 +162,8 @@ void game_render()
     map_render();
     fish_render();
 
-    primitive::line(900, 30, 1275, 30, 1, 1, 1, 0.4f, 50);
-    primitive::line(902, 30, 902 + 371 * gageB, 30, 0, 1, 1, 1.0f, 48);
+    //primitive::line(900, 30, 1275, 30, 1, 1, 1, 0.4f, 50);
+    //primitive::line(902, 30, 902 + 371 * gageB, 30, 0, 1, 1, 1.0f, 48);
     GameLib::primitive::rect(0, 0, 1280, 720, 0, 0, 0, 0.2f, 0.7f, 0.7f, 0.3f);
     player_render();
 }
