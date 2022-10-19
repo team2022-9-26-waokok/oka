@@ -1,5 +1,6 @@
 #include "all.h"
 //‡@
+Sprite * title;
 int title_state;
 int title_timer;
 extern int  curScene;
@@ -31,6 +32,7 @@ void title_update()
 	case 1:
 		//////// ƒpƒ‰ƒ[ƒ^‚Ìİ’è ////////
 		//‡J
+		title = sprite_load(L"./Data/Images/title.png");
 		GameLib::setBlendMode(Blender::BS_ALPHA);
 		title_state++;
 		/*fallthrough*/
@@ -57,6 +59,7 @@ void title_render()
 	GameLib::clear(0, 0.3f, 0.3f);
 	//‡I
 
+	sprite_render(title, 0, 0, 1.0f, 1.0f, 0, 0, 1280, 720);
 	if ((title_timer / 20) % 2 == 0)
 	{
 		font::textOut(1, "start:enter", (float)SCREEN_W/2-200,650, 1, 1, 1, 1, 1);

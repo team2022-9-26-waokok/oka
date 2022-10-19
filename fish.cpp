@@ -7,7 +7,7 @@ int i = 0;
 int direction = 0;
 int randMemory = 0;
 int FRandMemory = 0;
-
+extern int fevertimer;
 Sprite* sprfish;
 
 OBJ2D fish[50];
@@ -50,7 +50,7 @@ void fish_update()
 
 	case 1:
 
-		fish_MAX = 5;
+		fish_MAX = 15;
 		
 		for (int i = 0; i < 50; i++)
 		{
@@ -323,12 +323,17 @@ void fish_update()
 					camera_scroll(&fish[i]);
 					fish[i].timer++;
 
-					fish[i].battle_hani = fish[i].size.x* fish[i].size.x;
-					player.battle_hani = fish[i].battle_hani;
-				
-
-					player.battle_pos_x = rand() %(250- (int)(80 - 20 * player.battle_hani));
-
+						fish[i].battle_hani = fish[i].size.x * fish[i].size.x;
+						player.battle_hani = fish[i].battle_hani;
+					
+						if (fevertimer > 0)
+						{
+							player.battle_pos_x = rand() % (250 - (int)(100 - 1 * player.battle_hani));
+						}
+						else
+						{
+							player.battle_pos_x = rand() % (250 - (int)(80 - 20 * player.battle_hani));
+						}
 					fish[i].act = 2;
 					break;
 				case 2:

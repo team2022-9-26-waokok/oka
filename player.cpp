@@ -3,6 +3,7 @@
 
 int player_state;
 float blackcolor;
+OBJ2D fishR;
 OBJ2D player;
 int player_act;
 float player_time;
@@ -61,7 +62,8 @@ void player_init()
 void player_deinit()
 {
 //sprite
-
+	safe_delete(player_data.spr);
+	safe_delete(fishR.spr);
 
 
 }
@@ -72,10 +74,22 @@ void player_update()
 	{
 	case 0:
 		player_data.spr = sprite_load(L"./Data/Images/poi.png");
+		fishR.spr = sprite_load(L"./Data/Images/fish12.png");
 		++player_state;
 		/*falltheough*/
 
 	case 1:
+
+		fishR = {};
+		fishR.spr = sprite_load(L"./Data/Images/fish12.png");
+		fishR.pos = { (float)SCREEN_W / 2,(float)SCREEN_H / 2 };
+		fishR.scale = { 1.2f,1.2f };
+		fishR.texPos = { 0,0 };
+		fishR.texSize = { 160,160 };
+		fishR.pivot = { 160/2,160/2 };
+		fishR.angle = ToRadian(0);
+		fishR.color = { 1.0f,1.0f,1.0f,1.0f };
+
 
 		player = {};
 		player.timer = 0;
@@ -121,10 +135,24 @@ void player_update()
 
 		camera_scroll(&player);
 		TimeLimit--;
-		fevertimer--;
-		if (fevercount % 10 == 0)
+		if (fevertimer > 0)
 		{
+			fevertimer--;
+		}
+		if (fevercount % 5 == 0)
+		{
+
+		fish_MAX += 30;
+
 			fevertimer = 600;
+			fevercount = 1;
+		}
+		if (fevertimer == 0)
+		{
+			if (player_act != FISHING_BTTLE)
+			{
+				fish_MAX = 15;
+			}
 		}
 		if (fevertimer > 0)
 		{
@@ -138,13 +166,13 @@ void player_update()
 			player.pos.y = cursor_posY;
 			//camera_scroll(&player);
 
-			if (TRG(0) & PAD_TRG3 && fish_MAX <= 55)
-			{
+			//if (TRG(0) & PAD_TRG3 && fish_MAX <= 55)
+			//{
 
-				fish_MAX += 1;
+			//	fish_MAX += 1;
 
 
-			}
+			//}
 			if (TRG(0) & PAD_TRG1)
 			{
 				player_act = NORMAL_TRANS;
@@ -202,11 +230,11 @@ void player_update()
 			//	}
 			//}
 
-			if (TRG(0) & PAD_TRG2)
+		/*	if (TRG(0) & PAD_TRG2)
 			{
 				player_act = FISHING_BTTLE_TRANS;
 				game_timer = 0;
-			}
+			}*/
 
 			break;
 		case FISHING_BTTLE_TRANS:
@@ -223,15 +251,15 @@ void player_update()
 
 			player_time += 5.0f;
 			player_ber = player_time;
-			if (player_updown % 30 == 0)
-			{
-				player_up_down += 10.0f;
-			}
-			if (player_updown % 30 == 15)
-			{
-				player_up_down -= 10.0f;
-			}
-			player_updown++;
+			//if (player_updown % 30 == 0)
+			//{
+			//	player_up_down += 10.0f;
+			//}
+			//if (player_updown % 30 == 15)
+			//{
+			//	player_up_down -= 10.0f;
+			//}
+			//player_updown++;
 			if (player_time >= 240.0f)
 			{
 				player_time = 0.0f;
@@ -248,18 +276,42 @@ void player_update()
 
 			if (TRG(0) & PAD_TRG1)
 			{
-				if (player_ber >= player.battle_pos_x && player_ber <= player.battle_pos_x + (80 - 20 * player.battle_hani))
+
+				if (fevertimer > 0)
 				{
-					player.winbool = true;
-					blackcolor = 0;
-					score += 100;
-					fevercount++;
-
-					player_updown = 0;
-
-					player_act = FISHUP;
-					break;
+					if (player_ber >= player.battle_pos_x && player_ber <= player.battle_pos_x + (100 - 1 * player.battle_hani))
+					{
+						player.winbool = true;
+						blackcolor = 0;
+						score += 100;
+						fevercount++;
+						fishR.type = rand() % 5;
+						player_updown = 0;
+						fishR.exist = true;
+						player_act = FISHUP;
+						break;
+					}
 				}
+				else
+				{
+					if (player_ber >= player.battle_pos_x && player_ber <= player.battle_pos_x + (80 - 20 * player.battle_hani))
+					{
+						player.winbool = true;
+						blackcolor = 0;
+						score += 100;
+						fevercount++;
+						fishR.type = rand() % 5;
+						player_updown = 0;
+						fishR.exist = true;
+						player_act = FISHUP;
+						break;
+					}
+				}
+				
+
+
+
+
 				player_act = FISHUP;
 			}
 
@@ -267,6 +319,32 @@ void player_update()
 
 			break;
 		case  FISHUP:
+
+			game_timer += 0.2f;
+
+			if ((float)game_timer*0.1  >= 1 && fishR.act == 1)
+			{
+				
+				fishR.act = 2;
+			}
+			else if ((float)game_timer*0.1  >= 1.5 && fishR.act == 0)
+			{
+				fishR.act = 1;
+				game_timer = 0;
+			}
+
+			if (fishR.act == 1)//落下
+			{
+				fishR.pos.y += Easing::OutBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) *2;
+				
+			}
+			if(fishR.act == 0)
+			{
+				fishR.pos.y -= Easing::InBack((float)game_timer * 0.1f, 4.0f, 1.0f, 3.0f, 1.0f) *2;
+				
+			}
+	
+
 
 
 			if (blackcolor <= 0.5f)
@@ -276,11 +354,15 @@ void player_update()
 
 			if (TRG(0) & PAD_TRG1)
 			{
+				fishR.act = 0;
+				nomal_trans_easing = false;
+				fishR.exist = false;
 				player.winbool = false;
 				player_act = NORMAL;
 				player.scale = { 1.5f,1.5f };
 				blackcolor = 0;
 				game_timer = 0;
+			
 			}
 			break;
 		}
@@ -291,9 +373,9 @@ void player_render()
 {
 
 
-	debug::setString("player_ber:%f", player_ber);
-	debug::setString("player_battle:%f", player.battle_pos_x);
-	debug::setString("player_battle -hani:%f", ((80 - 20 * player.battle_hani) / 2));
+	//debug::setString("player_ber:%f", player_ber);
+	//debug::setString("player_battle:%f", player.battle_pos_x);
+	//debug::setString("player_battle -hani:%f", ((80 - 20 * player.battle_hani) / 2));
 
 		switch (player_act)
 		{
@@ -329,6 +411,7 @@ void player_render()
 
 		case FISHUP:
 			plrender();
+
 			break;
 
 		}
@@ -337,26 +420,50 @@ void player_render()
 
 void battle_render()
 {
-	if (player.pos.y >= 720 / 2)
-	{
-		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
-		primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250/2, player.pos.y + player.scroll.y - 60, 80-20 * player.battle_hani, 20,0,0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
-		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
 
+	if (fevertimer > 0)
+	{
+		if (player.pos.y >= 720 / 2)
+		{
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+			primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250 / 2, player.pos.y + player.scroll.y - 60, 100 - 1 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+
+		}
+		else
+		{
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+			primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250 / 2, player.pos.y + player.scroll.y + 60, 100 - 1 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0,0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+
+
+		}
 	}
 	else
 	{
-		primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
-		primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250/2, player.pos.y + player.scroll.y + 60, 80-20 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
-		primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+		if (player.pos.y >= 720 / 2)
+		{
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y - 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+			primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250 / 2, player.pos.y + player.scroll.y - 60, 80  - 20 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y - 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
+
+		}
+		else
+		{
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2, player.pos.y + player.scroll.y + 60, 250, 20, 0, 0, ToRadian(0), 0.2f, 0.2f, 0.2f, 0.5f);
+			primitive::rect(player.pos.x + player.scroll.x + player.battle_pos_x - 250 / 2, player.pos.y + player.scroll.y + 60, 80 - 20 * player.battle_hani, 20, 0, 0, ToRadian(0), 0.7f, 0.7f, 0.4f, 0.4f);
+			primitive::rect(player.pos.x + player.scroll.x - 250 / 2 + player_ber, player.pos.y + player.scroll.y + 60, 2, 20, 0, 0, ToRadian(0), 1.0f, 1.0f, 0.2f, 1.0f);
 
 
+		}
 	}
+	
 
 }
 
 void plrender()
 {
+
 	sprite_render(
 		player_data.spr,
 		player.pos.x + player.scroll.x, player.pos.y + player.scroll.y,//player.scrollはマウスカーソルによって移動した座標を表す
@@ -372,4 +479,19 @@ void plrender()
 	}
 }
 
+void Frender()
+{
+	if (fishR.exist)
+	{
+		sprite_render(
+			fishR.spr,
+			fishR.pos.x, fishR.pos.y,
+			fishR.scale.x, fishR.scale.y,
+			fishR.texPos.x+ fishR.texSize.x*fishR.type, fishR.texPos.y,
+			fishR.texSize.x, fishR.texSize.y,
+			fishR.pivot.x, fishR.pivot.y,
+			fishR.angle,
+			fishR.color.x, fishR.color.y, fishR.color.z, fishR.color.w);
 
+	}
+}

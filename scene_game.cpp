@@ -114,6 +114,7 @@ void game_render()
         text_out(1, "FEVERTIME", 500, 15, 1, 1, 0.0f, 0.0f, 0.0f);
     }
     player_render();
+    Frender();
 }
 
 //--------------------------------------

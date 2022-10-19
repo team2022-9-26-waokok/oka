@@ -13,7 +13,7 @@ extern int gatya_state;
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
 	// ゲームライブラリの初期設定
-	GameLib::init(L"自分でプロジェクトを作成", SCREEN_W, SCREEN_H);
+	GameLib::init(L"わくわくお魚釣り", SCREEN_W, SCREEN_H);
 	//①タイトルの初期設定
 	title_init();
 
@@ -84,12 +84,12 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		//④タイトルの描画処理
 		//title_render();
 		// デバッグ用文字列の表示
-		debug::display(1, 1, 1, 1, 1);
-		debug::setString("title_state:%d", title_state);
-		debug::setString("title_timer:%d", title_timer);
-		debug::setString("game_state:%d", game_state);
-		debug::setString("game_timer:%d", game_timer);
-		debug::setString("act:%d", player_act);
+		//debug::display(1, 1, 1, 1, 1);
+		//debug::setString("title_state:%d", title_state);
+		//debug::setString("title_timer:%d", title_timer);
+		//debug::setString("game_state:%d", game_state);
+		//debug::setString("game_timer:%d", game_timer);
+		//debug::setString("act:%d", player_act);
 
 
 

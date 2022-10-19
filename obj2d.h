@@ -34,7 +34,7 @@ struct OBJ2D
 
 	int					level;
 	int					direc;
-
+	int					type;
 	bool				winbool;
 	float				radius;		//“–‚½‚è”»’è‚Ì”¼Œa
 	float				battle_hani;
