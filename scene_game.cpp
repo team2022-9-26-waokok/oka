@@ -177,3 +177,4 @@ void game_deinit()
     safe_delete(sprCar);
     safe_delete(sprCourse);
 }
+////ofyosifbyioewyf9
