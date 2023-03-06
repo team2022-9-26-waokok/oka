@@ -124,3 +124,5 @@ void game_deinit()
 {
 
 }
+
+//1245r23t8iyelu fbyvoe8 bgb 9o8eb7tp08o427n@0247nbrh0-2@3nbrt032vb08ty409by420rby32y 
